@@ -66,7 +66,8 @@ Historial de salario e inflación: ${JSON.stringify(salarioHistorial.map((s) => 
     const respuesta = await chatWithGemini(mensaje, context);
 
     return NextResponse.json({ respuesta });
-  } catch {
+  } catch (error) {
+    console.error("Chat API error:", error);
     return NextResponse.json(
       { error: "Error al procesar mensaje" },
       { status: 500 }
