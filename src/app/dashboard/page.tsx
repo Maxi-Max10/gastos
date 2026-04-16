@@ -30,11 +30,16 @@ const CATEGORY_COLORS: Record<string, string> = {
 export default function DashboardPage() {
   const [resumen, setResumen] = useState<Resumen | null>(null);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
 
   useEffect(() => {
     fetch("/api/resumen")
-      .then((r) => r.json())
+      .then((r) => {
+        if (!r.ok) throw new Error("Error al cargar datos");
+        return r.json();
+      })
       .then(setResumen)
+      .catch(() => setError("No se pudieron cargar los datos. Intentá recargar la página."))
       .finally(() => setLoading(false));
   }, []);
 
@@ -52,7 +57,21 @@ export default function DashboardPage() {
     );
   }
 
-  if (!resumen) return null;
+  if (error || !resumen) {
+    return (
+      <>
+        <Navbar />
+        <div className="flex items-center justify-center min-h-[60vh]">
+          <div className="text-center">
+            <p className="text-[#f87171] mb-4">{error || "Error al cargar el dashboard"}</p>
+            <button onClick={() => window.location.reload()} className="btn-secondary text-sm">
+              Reintentar
+            </button>
+          </div>
+        </div>
+      </>
+    );
+  }
 
   const categorias = Object.entries(resumen.gastosPorCategoria).sort((a, b) => b[1] - a[1]);
   const meses = Object.entries(resumen.gastosPorMes);

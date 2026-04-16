@@ -39,13 +39,19 @@ export default function GastosPage() {
   const [saving, setSaving] = useState(false);
 
   const fetchGastos = useCallback(async () => {
-    const params = new URLSearchParams();
-    if (filtroMes) params.set("mes", filtroMes);
-    if (filtroCategoria) params.set("categoria", filtroCategoria);
-    const res = await fetch(`/api/gastos?${params}`);
-    const data = await res.json();
-    setGastos(data);
-    setLoading(false);
+    try {
+      const params = new URLSearchParams();
+      if (filtroMes) params.set("mes", filtroMes);
+      if (filtroCategoria) params.set("categoria", filtroCategoria);
+      const res = await fetch(`/api/gastos?${params}`);
+      if (!res.ok) throw new Error();
+      const data = await res.json();
+      setGastos(data);
+    } catch {
+      setGastos([]);
+    } finally {
+      setLoading(false);
+    }
   }, [filtroMes, filtroCategoria]);
 
   useEffect(() => { fetchGastos(); }, [fetchGastos]);
@@ -53,24 +59,35 @@ export default function GastosPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setSaving(true);
-    await fetch("/api/gastos", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ descripcion, monto: Number(monto), categoria, fecha }),
-    });
-    setDescripcion("");
-    setMonto("");
-    setCategoria("alimentación");
-    setFecha(new Date().toISOString().split("T")[0]);
-    setSaving(false);
-    setShowForm(false);
-    fetchGastos();
+    try {
+      const res = await fetch("/api/gastos", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ descripcion, monto: Number(monto), categoria, fecha }),
+      });
+      if (!res.ok) throw new Error();
+      setDescripcion("");
+      setMonto("");
+      setCategoria("alimentación");
+      setFecha(new Date().toISOString().split("T")[0]);
+      setShowForm(false);
+      fetchGastos();
+    } catch {
+      alert("Error al guardar el gasto");
+    } finally {
+      setSaving(false);
+    }
   };
 
   const handleDelete = async (id: string) => {
     if (!confirm("¿Eliminar este gasto?")) return;
-    await fetch(`/api/gastos/${id}`, { method: "DELETE" });
-    fetchGastos();
+    try {
+      const res = await fetch(`/api/gastos/${id}`, { method: "DELETE" });
+      if (!res.ok) throw new Error();
+      fetchGastos();
+    } catch {
+      alert("Error al eliminar el gasto");
+    }
   };
 
   const total = gastos.reduce((s, g) => s + g.monto, 0);

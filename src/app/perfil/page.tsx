@@ -29,27 +29,37 @@ export default function PerfilPage() {
 
   useEffect(() => {
     fetch("/api/salario")
-      .then((r) => r.json())
+      .then((r) => {
+        if (!r.ok) throw new Error();
+        return r.json();
+      })
       .then((data) => {
         if (data.salarioActual) setSalario(String(data.salarioActual));
         setHistorial(data.historial || []);
-      });
+      })
+      .catch(() => {});
   }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-    const res = await fetch("/api/salario", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ salario: Number(salario), inflacion: Number(inflacion || 0) }),
-    });
-    const data = await res.json();
-    setResultado(data);
-    if (data.registro) {
-      setHistorial((prev) => [data.registro, ...prev]);
+    try {
+      const res = await fetch("/api/salario", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ salario: Number(salario), inflacion: Number(inflacion || 0) }),
+      });
+      if (!res.ok) throw new Error();
+      const data = await res.json();
+      setResultado(data);
+      if (data.registro) {
+        setHistorial((prev) => [data.registro, ...prev]);
+      }
+    } catch {
+      alert("Error al guardar el salario");
+    } finally {
+      setLoading(false);
     }
-    setLoading(false);
   };
 
   return (
