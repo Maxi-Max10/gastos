@@ -2,6 +2,7 @@
 
 import { useState, useRef, useEffect } from "react";
 import Navbar from "@/components/Navbar";
+import ReactMarkdown from "react-markdown";
 import { Send, Sparkles, User, Loader2, MessageSquareText, Lightbulb } from "lucide-react";
 
 interface Message {
@@ -46,7 +47,7 @@ export default function ChatPage() {
       if (data.respuesta) {
         setMessages((prev) => [...prev, { role: "assistant", content: data.respuesta }]);
       } else {
-        setMessages((prev) => [...prev, { role: "assistant", content: "Lo siento, hubo un error. Intenta de nuevo." }]);
+        setMessages((prev) => [...prev, { role: "assistant", content: data.error || "Lo siento, hubo un error. Intenta de nuevo." }]);
       }
     } catch {
       setMessages((prev) => [...prev, { role: "assistant", content: "Error de conexión. Intenta de nuevo." }]);
@@ -93,13 +94,17 @@ export default function ChatPage() {
                 </div>
               )}
               <div
-                className={`max-w-[80%] rounded-2xl px-4 py-3 text-sm leading-relaxed whitespace-pre-wrap ${
+                className={`max-w-[80%] rounded-2xl px-4 py-3 text-sm leading-relaxed ${
                   msg.role === "user"
-                    ? "bg-[#7c3aed] text-white shadow-lg shadow-[#7c3aed]/15 rounded-br-md"
-                    : "bg-[#111119] border border-[#1a1a2e] text-[#e8e8f0] rounded-bl-md"
+                    ? "bg-[#7c3aed] text-white shadow-lg shadow-[#7c3aed]/15 rounded-br-md whitespace-pre-wrap"
+                    : "bg-[#111119] border border-[#1a1a2e] text-[#e8e8f0] rounded-bl-md chat-markdown"
                 }`}
               >
-                {msg.content}
+                {msg.role === "assistant" ? (
+                  <ReactMarkdown>{msg.content}</ReactMarkdown>
+                ) : (
+                  msg.content
+                )}
               </div>
               {msg.role === "user" && (
                 <div className="w-8 h-8 rounded-lg bg-[#1a1a25] border border-[#1a1a2e] flex items-center justify-center flex-shrink-0 mt-0.5">

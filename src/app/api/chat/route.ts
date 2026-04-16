@@ -68,9 +68,9 @@ Historial de salario e inflación: ${JSON.stringify(salarioHistorial.map((s) => 
     return NextResponse.json({ respuesta });
   } catch (error) {
     console.error("Chat API error:", error);
-    return NextResponse.json(
-      { error: "Error al procesar mensaje" },
-      { status: 500 }
-    );
+    const msg = error instanceof Error && error.message.includes("429")
+      ? "Se superó el límite de uso de la IA. Intentá de nuevo más tarde."
+      : "Error al procesar mensaje";
+    return NextResponse.json({ error: msg }, { status: 500 });
   }
 }
