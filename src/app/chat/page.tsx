@@ -75,7 +75,7 @@ export default function ChatPage() {
     <>
       <Navbar />
       <div className="max-w-3xl mx-auto px-4 py-4 flex flex-col" style={{ height: "calc(100vh - 64px)" }}>
-        <h1 className="text-xl font-bold mb-4">Chat con IA Financiera</h1>
+        <h1 className="text-xl font-bold mb-4 text-white">Chat con IA Financiera</h1>
 
         {/* Messages */}
         <div className="flex-1 overflow-y-auto space-y-4 mb-4 pr-2">
@@ -84,8 +84,8 @@ export default function ChatPage() {
               <div
                 className={`max-w-[85%] rounded-2xl px-4 py-3 text-sm leading-relaxed whitespace-pre-wrap ${
                   msg.role === "user"
-                    ? "bg-indigo-600 text-white"
-                    : "bg-white border shadow-sm text-gray-800"
+                    ? "bg-[#6c5ce7] text-white"
+                    : "bg-[#12121a] border border-[#1e1e2e] text-[#e4e4ed]"
                 }`}
               >
                 {msg.content}
@@ -94,7 +94,7 @@ export default function ChatPage() {
           ))}
           {loading && (
             <div className="flex justify-start">
-              <div className="bg-white border shadow-sm rounded-2xl px-4 py-3 text-sm text-gray-400">
+              <div className="bg-[#12121a] border border-[#1e1e2e] rounded-2xl px-4 py-3 text-sm text-[#8888a0]">
                 <span className="animate-pulse">Pensando...</span>
               </div>
             </div>
@@ -109,7 +109,7 @@ export default function ChatPage() {
               <button
                 key={q}
                 onClick={() => setInput(q)}
-                className="text-xs bg-indigo-50 text-indigo-700 px-3 py-1.5 rounded-full hover:bg-indigo-100 transition"
+                className="text-xs bg-[#6c5ce7]/10 text-[#a29bfe] px-3 py-1.5 rounded-full hover:bg-[#6c5ce7]/20 transition border border-[#6c5ce7]/20"
               >
                 {q}
               </button>
@@ -124,13 +124,13 @@ export default function ChatPage() {
             value={input}
             onChange={(e) => setInput(e.target.value)}
             placeholder="Pregúntame sobre tus finanzas..."
-            className="flex-1 px-4 py-3 border rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none text-sm"
+            className="flex-1 px-4 py-3 bg-[#12121a] border border-[#1e1e2e] rounded-xl focus:ring-2 focus:ring-[#6c5ce7]/50 outline-none text-sm text-white placeholder-[#4a4a5a]"
             disabled={loading}
           />
           <button
             type="submit"
             disabled={loading || !input.trim()}
-            className="bg-indigo-600 text-white px-5 py-3 rounded-xl hover:bg-indigo-700 transition font-medium disabled:opacity-50 text-sm"
+            className="bg-[#6c5ce7] text-white px-5 py-3 rounded-xl hover:bg-[#7c6ef7] transition font-medium disabled:opacity-50 text-sm"
           >
             Enviar
           </button>

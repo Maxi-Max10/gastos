@@ -29,7 +29,7 @@ export default function DashboardPage() {
       <>
         <Navbar />
         <div className="flex items-center justify-center min-h-[60vh]">
-          <div className="animate-pulse text-gray-400 text-lg">Cargando...</div>
+          <div className="animate-pulse text-[#8888a0] text-lg">Cargando...</div>
         </div>
       </>
     );
@@ -45,48 +45,48 @@ export default function DashboardPage() {
     <>
       <Navbar />
       <div className="max-w-7xl mx-auto px-4 py-8">
-        <h1 className="text-2xl font-bold mb-6">Dashboard</h1>
+        <h1 className="text-2xl font-bold mb-6 text-white">Dashboard</h1>
 
         {/* Cards */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-          <div className="bg-white rounded-xl p-6 shadow-sm border">
-            <p className="text-sm text-gray-500 mb-1">Salario Mensual</p>
-            <p className="text-2xl font-bold text-indigo-600">
+          <div className="bg-[#12121a] rounded-xl p-6 border border-[#1e1e2e] hover:border-[#6c5ce7]/30 transition">
+            <p className="text-xs text-[#8888a0] mb-2 uppercase tracking-wider">Salario Mensual</p>
+            <p className="text-2xl font-bold text-[#a29bfe]">
               ${resumen.salario.toLocaleString()}
             </p>
           </div>
-          <div className="bg-white rounded-xl p-6 shadow-sm border">
-            <p className="text-sm text-gray-500 mb-1">Gastos Este Mes</p>
-            <p className="text-2xl font-bold text-red-500">
+          <div className="bg-[#12121a] rounded-xl p-6 border border-[#1e1e2e] hover:border-[#ff4d6a]/30 transition">
+            <p className="text-xs text-[#8888a0] mb-2 uppercase tracking-wider">Gastos Este Mes</p>
+            <p className="text-2xl font-bold text-[#ff4d6a]">
               ${resumen.gastosMesActual.toLocaleString()}
             </p>
           </div>
-          <div className="bg-white rounded-xl p-6 shadow-sm border">
-            <p className="text-sm text-gray-500 mb-1">Disponible</p>
-            <p className={`text-2xl font-bold ${resumen.disponible >= 0 ? "text-green-600" : "text-red-600"}`}>
+          <div className="bg-[#12121a] rounded-xl p-6 border border-[#1e1e2e] hover:border-[#00d2a0]/30 transition">
+            <p className="text-xs text-[#8888a0] mb-2 uppercase tracking-wider">Disponible</p>
+            <p className={`text-2xl font-bold ${resumen.disponible >= 0 ? "text-[#00d2a0]" : "text-[#ff4d6a]"}`}>
               ${resumen.disponible.toLocaleString()}
             </p>
           </div>
-          <div className="bg-white rounded-xl p-6 shadow-sm border">
-            <p className="text-sm text-gray-500 mb-1">Total Registros</p>
-            <p className="text-2xl font-bold text-gray-700">{resumen.totalRegistros}</p>
+          <div className="bg-[#12121a] rounded-xl p-6 border border-[#1e1e2e]">
+            <p className="text-xs text-[#8888a0] mb-2 uppercase tracking-wider">Total Registros</p>
+            <p className="text-2xl font-bold text-white">{resumen.totalRegistros}</p>
           </div>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           {/* Gastos por Mes */}
-          <div className="bg-white rounded-xl p-6 shadow-sm border">
-            <h2 className="font-semibold mb-4">Gastos por Mes (últimos 6)</h2>
+          <div className="bg-[#12121a] rounded-xl p-6 border border-[#1e1e2e]">
+            <h2 className="font-semibold mb-4 text-white">Gastos por Mes (últimos 6)</h2>
             <div className="space-y-3">
               {meses.map(([mes, monto]) => (
                 <div key={mes}>
                   <div className="flex justify-between text-sm mb-1">
-                    <span className="text-gray-600">{mes}</span>
-                    <span className="font-medium">${monto.toLocaleString()}</span>
+                    <span className="text-[#8888a0]">{mes}</span>
+                    <span className="font-medium text-white">${monto.toLocaleString()}</span>
                   </div>
-                  <div className="w-full bg-gray-100 rounded-full h-3">
+                  <div className="w-full bg-[#0a0a0f] rounded-full h-2.5">
                     <div
-                      className="bg-indigo-500 h-3 rounded-full transition-all"
+                      className="bg-gradient-to-r from-[#6c5ce7] to-[#a29bfe] h-2.5 rounded-full transition-all"
                       style={{ width: `${(monto / maxMes) * 100}%` }}
                     />
                   </div>
@@ -96,10 +96,10 @@ export default function DashboardPage() {
           </div>
 
           {/* Gastos por Categoría */}
-          <div className="bg-white rounded-xl p-6 shadow-sm border">
-            <h2 className="font-semibold mb-4">Gastos por Categoría</h2>
+          <div className="bg-[#12121a] rounded-xl p-6 border border-[#1e1e2e]">
+            <h2 className="font-semibold mb-4 text-white">Gastos por Categoría</h2>
             {categorias.length === 0 ? (
-              <p className="text-gray-400 text-sm">No hay gastos registrados</p>
+              <p className="text-[#8888a0] text-sm">No hay gastos registrados</p>
             ) : (
               <div className="space-y-3">
                 {categorias.map(([cat, monto]) => {
@@ -107,14 +107,14 @@ export default function DashboardPage() {
                   return (
                     <div key={cat}>
                       <div className="flex justify-between text-sm mb-1">
-                        <span className="text-gray-600 capitalize">{cat}</span>
-                        <span className="font-medium">
+                        <span className="text-[#8888a0] capitalize">{cat}</span>
+                        <span className="font-medium text-white">
                           ${monto.toLocaleString()} ({pct.toFixed(1)}%)
                         </span>
                       </div>
-                      <div className="w-full bg-gray-100 rounded-full h-3">
+                      <div className="w-full bg-[#0a0a0f] rounded-full h-2.5">
                         <div
-                          className="bg-emerald-500 h-3 rounded-full transition-all"
+                          className="bg-gradient-to-r from-[#00d2a0] to-[#00b894] h-2.5 rounded-full transition-all"
                           style={{ width: `${pct}%` }}
                         />
                       </div>

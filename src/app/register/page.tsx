@@ -40,63 +40,66 @@ export default function RegisterPage() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-indigo-500 to-purple-600 px-4">
-      <div className="bg-white rounded-2xl shadow-xl p-8 w-full max-w-md">
-        <h1 className="text-2xl font-bold text-center mb-2">Crear Cuenta</h1>
-        <p className="text-gray-500 text-center mb-6">Comienza a controlar tus gastos</p>
+    <div className="min-h-screen flex items-center justify-center bg-[#0a0a0f] px-4 relative">
+      <div className="absolute inset-0 pointer-events-none">
+        <div className="absolute bottom-[20%] right-[30%] w-[400px] h-[400px] bg-violet-600/5 rounded-full blur-[120px]" />
+      </div>
+      <div className="bg-[#12121a] border border-[#1e1e2e] rounded-2xl p-8 w-full max-w-md relative z-10 glow-sm">
+        <h1 className="text-2xl font-bold text-center mb-2 text-white">Crear Cuenta</h1>
+        <p className="text-[#8888a0] text-center mb-6 text-sm">Comienza a controlar tus gastos</p>
 
         {error && (
-          <div className="bg-red-50 text-red-600 px-4 py-3 rounded-lg mb-4 text-sm">
+          <div className="bg-[#ff4d6a]/10 text-[#ff4d6a] px-4 py-3 rounded-lg mb-4 text-sm border border-[#ff4d6a]/20">
             {error}
           </div>
         )}
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Nombre</label>
+            <label className="block text-sm font-medium text-[#8888a0] mb-1.5">Nombre</label>
             <input
               type="text"
               value={nombre}
               onChange={(e) => setNombre(e.target.value)}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none"
+              className="w-full px-4 py-2.5 bg-[#0a0a0f] border border-[#1e1e2e] rounded-xl focus:ring-2 focus:ring-[#6c5ce7]/50 focus:border-[#6c5ce7]/50 outline-none text-white placeholder-[#4a4a5a] text-sm"
               placeholder="Tu nombre"
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Email</label>
+            <label className="block text-sm font-medium text-[#8888a0] mb-1.5">Email</label>
             <input
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none"
+              className="w-full px-4 py-2.5 bg-[#0a0a0f] border border-[#1e1e2e] rounded-xl focus:ring-2 focus:ring-[#6c5ce7]/50 focus:border-[#6c5ce7]/50 outline-none text-white placeholder-[#4a4a5a] text-sm"
               placeholder="tu@email.com"
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Contraseña</label>
+            <label className="block text-sm font-medium text-[#8888a0] mb-1.5">Contraseña</label>
             <input
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
               minLength={6}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none"
+              className="w-full px-4 py-2.5 bg-[#0a0a0f] border border-[#1e1e2e] rounded-xl focus:ring-2 focus:ring-[#6c5ce7]/50 focus:border-[#6c5ce7]/50 outline-none text-white placeholder-[#4a4a5a] text-sm"
               placeholder="Mínimo 6 caracteres"
             />
           </div>
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-indigo-600 text-white py-2 rounded-lg hover:bg-indigo-700 transition font-medium disabled:opacity-50"
+            className="w-full bg-[#6c5ce7] text-white py-2.5 rounded-xl hover:bg-[#7c6ef7] transition font-medium disabled:opacity-50 shadow-lg shadow-[#6c5ce7]/20"
           >
             {loading ? "Creando cuenta..." : "Crear cuenta"}
           </button>
         </form>
 
-        <p className="text-center text-sm text-gray-500 mt-6">
+        <p className="text-center text-sm text-[#8888a0] mt-6">
           ¿Ya tienes cuenta?{" "}
-          <Link href="/login" className="text-indigo-600 font-medium hover:underline">
+          <Link href="/login" className="text-[#a29bfe] font-medium hover:underline">
             Inicia sesión
           </Link>
         </p>

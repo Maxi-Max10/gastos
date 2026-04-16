@@ -54,12 +54,12 @@ export default function PerfilPage() {
     <>
       <Navbar />
       <div className="max-w-3xl mx-auto px-4 py-8">
-        <h1 className="text-2xl font-bold mb-6">Salario y Ajuste por Inflación</h1>
+        <h1 className="text-2xl font-bold mb-6 text-white">Salario y Ajuste por Inflación</h1>
 
-        <form onSubmit={handleSubmit} className="bg-white rounded-xl p-6 shadow-sm border mb-6">
+        <form onSubmit={handleSubmit} className="bg-[#12121a] rounded-xl p-6 border border-[#1e1e2e] mb-6">
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="block text-sm font-medium text-[#8888a0] mb-1.5">
                 Salario Mensual ($)
               </label>
               <input
@@ -69,12 +69,12 @@ export default function PerfilPage() {
                 value={salario}
                 onChange={(e) => setSalario(e.target.value)}
                 required
-                className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none"
+                className="w-full px-3 py-2.5 bg-[#0a0a0f] border border-[#1e1e2e] rounded-xl focus:ring-2 focus:ring-[#6c5ce7]/50 outline-none text-white placeholder-[#4a4a5a]"
                 placeholder="Ej: 50000"
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="block text-sm font-medium text-[#8888a0] mb-1.5">
                 Tasa de Inflación (%)
               </label>
               <input
@@ -83,7 +83,7 @@ export default function PerfilPage() {
                 min="0"
                 value={inflacion}
                 onChange={(e) => setInflacion(e.target.value)}
-                className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none"
+                className="w-full px-3 py-2.5 bg-[#0a0a0f] border border-[#1e1e2e] rounded-xl focus:ring-2 focus:ring-[#6c5ce7]/50 outline-none text-white placeholder-[#4a4a5a]"
                 placeholder="Ej: 4.5"
               />
             </div>
@@ -91,7 +91,7 @@ export default function PerfilPage() {
           <button
             type="submit"
             disabled={loading}
-            className="bg-indigo-600 text-white px-6 py-2 rounded-lg hover:bg-indigo-700 transition font-medium disabled:opacity-50"
+            className="bg-[#6c5ce7] text-white px-6 py-2.5 rounded-xl hover:bg-[#7c6ef7] transition font-medium disabled:opacity-50"
           >
             {loading ? "Calculando..." : "Calcular Ajuste"}
           </button>
@@ -99,28 +99,28 @@ export default function PerfilPage() {
 
         {/* Resultado */}
         {resultado && (
-          <div className="bg-white rounded-xl p-6 shadow-sm border mb-6">
-            <h2 className="font-semibold mb-4">Resultado del Ajuste</h2>
+          <div className="bg-[#12121a] rounded-xl p-6 border border-[#1e1e2e] mb-6">
+            <h2 className="font-semibold mb-4 text-white">Resultado del Ajuste</h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <div className="bg-blue-50 rounded-lg p-4">
-                <p className="text-sm text-blue-600 mb-1">Salario Nominal</p>
-                <p className="text-xl font-bold text-blue-800">
+              <div className="bg-[#4da6ff]/10 border border-[#4da6ff]/20 rounded-xl p-4">
+                <p className="text-xs text-[#4da6ff] mb-1 uppercase tracking-wider">Salario Nominal</p>
+                <p className="text-xl font-bold text-[#4da6ff]">
                   ${resultado.salario.toLocaleString()}
                 </p>
               </div>
-              <div className="bg-orange-50 rounded-lg p-4">
-                <p className="text-sm text-orange-600 mb-1">Inflación Aplicada</p>
-                <p className="text-xl font-bold text-orange-800">{resultado.inflacion}%</p>
+              <div className="bg-[#ffb347]/10 border border-[#ffb347]/20 rounded-xl p-4">
+                <p className="text-xs text-[#ffb347] mb-1 uppercase tracking-wider">Inflación Aplicada</p>
+                <p className="text-xl font-bold text-[#ffb347]">{resultado.inflacion}%</p>
               </div>
-              <div className="bg-green-50 rounded-lg p-4">
-                <p className="text-sm text-green-600 mb-1">Poder Adquisitivo Real</p>
-                <p className="text-xl font-bold text-green-800">
+              <div className="bg-[#00d2a0]/10 border border-[#00d2a0]/20 rounded-xl p-4">
+                <p className="text-xs text-[#00d2a0] mb-1 uppercase tracking-wider">Poder Adquisitivo Real</p>
+                <p className="text-xl font-bold text-[#00d2a0]">
                   ${resultado.salarioAjustado.toLocaleString(undefined, { maximumFractionDigits: 2 })}
                 </p>
               </div>
-              <div className="bg-red-50 rounded-lg p-4">
-                <p className="text-sm text-red-600 mb-1">Pérdida por Inflación</p>
-                <p className="text-xl font-bold text-red-800">
+              <div className="bg-[#ff4d6a]/10 border border-[#ff4d6a]/20 rounded-xl p-4">
+                <p className="text-xs text-[#ff4d6a] mb-1 uppercase tracking-wider">Pérdida por Inflación</p>
+                <p className="text-xl font-bold text-[#ff4d6a]">
                   -${resultado.perdidaPorInflacion.toLocaleString(undefined, { maximumFractionDigits: 2 })}
                 </p>
               </div>
@@ -130,12 +130,12 @@ export default function PerfilPage() {
 
         {/* Historial */}
         {historial.length > 0 && (
-          <div className="bg-white rounded-xl p-6 shadow-sm border">
-            <h2 className="font-semibold mb-4">Historial de Ajustes</h2>
+          <div className="bg-[#12121a] rounded-xl p-6 border border-[#1e1e2e]">
+            <h2 className="font-semibold mb-4 text-white">Historial de Ajustes</h2>
             <div className="overflow-x-auto">
               <table className="w-full text-sm">
                 <thead>
-                  <tr className="border-b text-left text-gray-500">
+                  <tr className="border-b border-[#1e1e2e] text-left text-[#8888a0]">
                     <th className="pb-2">Fecha</th>
                     <th className="pb-2">Salario</th>
                     <th className="pb-2">Inflación</th>
@@ -144,11 +144,11 @@ export default function PerfilPage() {
                 </thead>
                 <tbody>
                   {historial.map((h) => (
-                    <tr key={h.id} className="border-b last:border-0">
-                      <td className="py-2">{new Date(h.fecha).toLocaleDateString("es")}</td>
-                      <td className="py-2">${h.salario.toLocaleString()}</td>
-                      <td className="py-2">{h.inflacion}%</td>
-                      <td className="py-2">
+                    <tr key={h.id} className="border-b border-[#1e1e2e] last:border-0 text-[#e4e4ed]">
+                      <td className="py-2.5">{new Date(h.fecha).toLocaleDateString("es")}</td>
+                      <td className="py-2.5">${h.salario.toLocaleString()}</td>
+                      <td className="py-2.5 text-[#ffb347]">{h.inflacion}%</td>
+                      <td className="py-2.5 text-[#00d2a0]">
                         ${h.salarioAjustado.toLocaleString(undefined, { maximumFractionDigits: 2 })}
                       </td>
                     </tr>

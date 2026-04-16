@@ -86,14 +86,14 @@ export default function GastosPage() {
       <div className="max-w-5xl mx-auto px-4 py-8">
         <div className="flex flex-wrap items-center justify-between gap-4 mb-6">
           <div>
-            <h1 className="text-2xl font-bold">Mis Gastos</h1>
-            <p className="text-gray-500 text-sm">
+            <h1 className="text-2xl font-bold text-white">Mis Gastos</h1>
+            <p className="text-[#8888a0] text-sm">
               {gastos.length} gastos · Total: ${total.toLocaleString()}
             </p>
           </div>
           <button
             onClick={() => setShowForm(!showForm)}
-            className="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition text-sm font-medium"
+            className="bg-[#6c5ce7] text-white px-4 py-2 rounded-xl hover:bg-[#7c6ef7] transition text-sm font-medium shadow-lg shadow-[#6c5ce7]/20"
           >
             {showForm ? "Cancelar" : "+ Nuevo Gasto"}
           </button>
@@ -101,21 +101,21 @@ export default function GastosPage() {
 
         {/* Form */}
         {showForm && (
-          <form onSubmit={handleSubmit} className="bg-white rounded-xl p-6 shadow-sm border mb-6">
+          <form onSubmit={handleSubmit} className="bg-[#12121a] rounded-xl p-6 border border-[#1e1e2e] mb-6">
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Descripción</label>
+                <label className="block text-sm font-medium text-[#8888a0] mb-1.5">Descripción</label>
                 <input
                   type="text"
                   value={descripcion}
                   onChange={(e) => setDescripcion(e.target.value)}
                   required
-                  className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none text-sm"
+                  className="w-full px-3 py-2.5 bg-[#0a0a0f] border border-[#1e1e2e] rounded-xl focus:ring-2 focus:ring-[#6c5ce7]/50 outline-none text-sm text-white placeholder-[#4a4a5a]"
                   placeholder="Ej: Supermercado"
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Monto ($)</label>
+                <label className="block text-sm font-medium text-[#8888a0] mb-1.5">Monto ($)</label>
                 <input
                   type="number"
                   step="0.01"
@@ -123,16 +123,16 @@ export default function GastosPage() {
                   value={monto}
                   onChange={(e) => setMonto(e.target.value)}
                   required
-                  className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none text-sm"
+                  className="w-full px-3 py-2.5 bg-[#0a0a0f] border border-[#1e1e2e] rounded-xl focus:ring-2 focus:ring-[#6c5ce7]/50 outline-none text-sm text-white placeholder-[#4a4a5a]"
                   placeholder="0.00"
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Categoría</label>
+                <label className="block text-sm font-medium text-[#8888a0] mb-1.5">Categoría</label>
                 <select
                   value={categoria}
                   onChange={(e) => setCategoria(e.target.value)}
-                  className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none text-sm"
+                  className="w-full px-3 py-2.5 bg-[#0a0a0f] border border-[#1e1e2e] rounded-xl focus:ring-2 focus:ring-[#6c5ce7]/50 outline-none text-sm text-white"
                 >
                   {CATEGORIAS.map((c) => (
                     <option key={c} value={c}>
@@ -142,19 +142,19 @@ export default function GastosPage() {
                 </select>
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Fecha</label>
+                <label className="block text-sm font-medium text-[#8888a0] mb-1.5">Fecha</label>
                 <input
                   type="date"
                   value={fecha}
                   onChange={(e) => setFecha(e.target.value)}
-                  className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none text-sm"
+                  className="w-full px-3 py-2.5 bg-[#0a0a0f] border border-[#1e1e2e] rounded-xl focus:ring-2 focus:ring-[#6c5ce7]/50 outline-none text-sm text-white"
                 />
               </div>
             </div>
             <button
               type="submit"
               disabled={saving}
-              className="mt-4 bg-indigo-600 text-white px-6 py-2 rounded-lg hover:bg-indigo-700 transition text-sm font-medium disabled:opacity-50"
+              className="mt-4 bg-[#6c5ce7] text-white px-6 py-2.5 rounded-xl hover:bg-[#7c6ef7] transition text-sm font-medium disabled:opacity-50"
             >
               {saving ? "Guardando..." : "Guardar Gasto"}
             </button>
@@ -167,13 +167,13 @@ export default function GastosPage() {
             type="month"
             value={filtroMes}
             onChange={(e) => setFiltroMes(e.target.value)}
-            className="px-3 py-2 border rounded-lg text-sm"
+            className="px-3 py-2 bg-[#12121a] border border-[#1e1e2e] rounded-xl text-sm text-white"
             placeholder="Filtrar por mes"
           />
           <select
             value={filtroCategoria}
             onChange={(e) => setFiltroCategoria(e.target.value)}
-            className="px-3 py-2 border rounded-lg text-sm"
+            className="px-3 py-2 bg-[#12121a] border border-[#1e1e2e] rounded-xl text-sm text-white"
           >
             <option value="">Todas las categorías</option>
             {CATEGORIAS.map((c) => (
@@ -188,7 +188,7 @@ export default function GastosPage() {
                 setFiltroMes("");
                 setFiltroCategoria("");
               }}
-              className="text-sm text-indigo-600 hover:underline"
+              className="text-sm text-[#a29bfe] hover:underline"
             >
               Limpiar filtros
             </button>
@@ -197,9 +197,9 @@ export default function GastosPage() {
 
         {/* List */}
         {loading ? (
-          <div className="text-gray-400 text-center py-10">Cargando...</div>
+          <div className="text-[#8888a0] text-center py-10">Cargando...</div>
         ) : gastos.length === 0 ? (
-          <div className="text-center py-16 text-gray-400">
+          <div className="text-center py-16 text-[#8888a0]">
             <p className="text-4xl mb-2">💸</p>
             <p>No hay gastos registrados</p>
           </div>
@@ -208,22 +208,22 @@ export default function GastosPage() {
             {gastos.map((gasto) => (
               <div
                 key={gasto.id}
-                className="bg-white rounded-xl p-4 shadow-sm border flex items-center justify-between gap-4"
+                className="bg-[#12121a] rounded-xl p-4 border border-[#1e1e2e] flex items-center justify-between gap-4 hover:border-[#2e2e3e] transition"
               >
                 <div className="flex-1 min-w-0">
-                  <p className="font-medium text-gray-900 truncate">{gasto.descripcion}</p>
-                  <p className="text-sm text-gray-500">
+                  <p className="font-medium text-white truncate">{gasto.descripcion}</p>
+                  <p className="text-sm text-[#8888a0]">
                     <span className="capitalize">{gasto.categoria}</span> ·{" "}
                     {new Date(gasto.fecha).toLocaleDateString("es")}
                   </p>
                 </div>
                 <div className="flex items-center gap-3">
-                  <span className="text-lg font-semibold text-red-500 whitespace-nowrap">
+                  <span className="text-lg font-semibold text-[#ff4d6a] whitespace-nowrap">
                     -${gasto.monto.toLocaleString()}
                   </span>
                   <button
                     onClick={() => handleDelete(gasto.id)}
-                    className="text-gray-400 hover:text-red-500 transition text-sm"
+                    className="text-[#4a4a5a] hover:text-[#ff4d6a] transition text-sm"
                     title="Eliminar"
                   >
                     ✕
