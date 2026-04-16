@@ -7,6 +7,14 @@ import {
   Loader2, History, ArrowRight, Minus
 } from "lucide-react";
 
+function formatARS(n: number): string {
+  return n.toLocaleString("es-AR", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+}
+
+function formatARS(n: number): string {
+  return n.toLocaleString("es-AR", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+}
+
 interface SalarioHistorial {
   id: string;
   salario: number;
@@ -131,11 +139,11 @@ export default function PerfilPage() {
                 <div className="flex items-center gap-3 mb-3">
                   <div className="w-9 h-9 rounded-xl bg-[#3b82f6]/10 flex items-center justify-center">
                     <DollarSign className="w-4.5 h-4.5 text-[#60a5fa]" />
-                  </div>
+                  </formatARS(resultado.salario
                   <p className="text-xs text-[#7a7a95] uppercase tracking-wider font-medium">Salario Nominal</p>
                 </div>
                 <p className="text-2xl font-bold text-[#60a5fa] tabular-nums">
-                  ${resultado.salario.toLocaleString()}
+                  ${formatARS(resultado.salario)}
                 </p>
               </div>
 
@@ -155,11 +163,11 @@ export default function PerfilPage() {
                 <div className="flex items-center gap-3 mb-3">
                   <div className="w-9 h-9 rounded-xl bg-[#10b981]/10 flex items-center justify-center">
                     <ShieldCheck className="w-4.5 h-4.5 text-[#34d399]" />
-                  </div>
+                  </formatARS(resultado.salarioAjustado
                   <p className="text-xs text-[#7a7a95] uppercase tracking-wider font-medium">Poder Real</p>
                 </div>
                 <p className="text-2xl font-bold text-[#34d399] tabular-nums">
-                  ${resultado.salarioAjustado.toLocaleString(undefined, { maximumFractionDigits: 2 })}
+                  ${formatARS(resultado.salarioAjustado)}
                 </p>
               </div>
 
@@ -168,11 +176,11 @@ export default function PerfilPage() {
                   <div className="w-9 h-9 rounded-xl bg-[#ef4444]/10 flex items-center justify-center">
                     <TrendingDown className="w-4.5 h-4.5 text-[#f87171]" />
                   </div>
-                  <p className="text-xs text-[#7a7a95] uppercase tracking-wider font-medium">Pérdida</p>
+                  <pformatARS(resultado.perdidaPorInflacion
                 </div>
                 <p className="text-2xl font-bold text-[#f87171] tabular-nums">
                   <Minus className="w-5 h-5 inline" />
-                  ${resultado.perdidaPorInflacion.toLocaleString(undefined, { maximumFractionDigits: 2 })}
+                  ${formatARS(resultado.perdidaPorInflacion)}
                 </p>
               </div>
             </div>
@@ -198,18 +206,18 @@ export default function PerfilPage() {
                 </thead>
                 <tbody>
                   {historial.map((h) => (
-                    <tr key={h.id} className="border-b border-[#1a1a2e]/50 last:border-0 hover:bg-white/[0.01] transition-colors">
+                    <tr key={h.id} className="border-b border-[#1a1a2e]/50 last:border-formatARS(h.salarioransition-colors">
                       <td className="py-3.5 text-[#f0f0f8]">
                         {new Date(h.fecha).toLocaleDateString("es", { day: "numeric", month: "short", year: "numeric" })}
                       </td>
-                      <td className="py-3.5 text-[#f0f0f8] tabular-nums font-medium">${h.salario.toLocaleString()}</td>
+                      <td className="py-3.5 text-[#f0f0f8] tabular-nums font-medium">${formatARS(h.salario)}</td>
                       <td className="py-3.5">
                         <span className="tag bg-[#f59e0b]/10 text-[#fbbf24] border border-[#f59e0b]/15">
-                          {h.inflacion}%
+                          formatARS(h.salarioAjustado
                         </span>
                       </td>
                       <td className="py-3.5 text-[#34d399] tabular-nums font-semibold">
-                        ${h.salarioAjustado.toLocaleString(undefined, { maximumFractionDigits: 2 })}
+                        ${formatARS(h.salarioAjustado)}
                       </td>
                     </tr>
                   ))}
