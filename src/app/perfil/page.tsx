@@ -2,6 +2,10 @@
 
 import { useEffect, useState } from "react";
 import Navbar from "@/components/Navbar";
+import {
+  DollarSign, TrendingDown, Percent, ShieldCheck, Calculator,
+  Loader2, History, ArrowRight, Minus
+} from "lucide-react";
 
 interface SalarioHistorial {
   id: string;
@@ -35,13 +39,11 @@ export default function PerfilPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-
     const res = await fetch("/api/salario", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ salario: Number(salario), inflacion: Number(inflacion || 0) }),
     });
-
     const data = await res.json();
     setResultado(data);
     if (data.registro) {
@@ -53,102 +55,150 @@ export default function PerfilPage() {
   return (
     <>
       <Navbar />
-      <div className="max-w-3xl mx-auto px-4 py-8">
-        <h1 className="text-2xl font-bold mb-6 text-white">Salario y Ajuste por Inflación</h1>
+      <div className="max-w-3xl mx-auto px-4 sm:px-6 py-8">
+        <div className="mb-8">
+          <h1 className="text-2xl font-bold text-white mb-1">Salario e Inflación</h1>
+          <p className="text-sm text-[#7a7a95]">Calculá el impacto real de la inflación en tu salario</p>
+        </div>
 
-        <form onSubmit={handleSubmit} className="bg-[#12121a] rounded-xl p-6 border border-[#1e1e2e] mb-6">
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
+        {/* Calculator Form */}
+        <form onSubmit={handleSubmit} className="stat-card !p-6 mb-8">
+          <div className="flex items-center gap-2.5 mb-6">
+            <Calculator className="w-5 h-5 text-[#a78bfa]" />
+            <h2 className="text-sm font-medium text-[#7a7a95] uppercase tracking-wider">Calculadora</h2>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 mb-6">
             <div>
-              <label className="block text-sm font-medium text-[#8888a0] mb-1.5">
-                Salario Mensual ($)
-              </label>
-              <input
-                type="number"
-                step="0.01"
-                min="0"
-                value={salario}
-                onChange={(e) => setSalario(e.target.value)}
-                required
-                className="w-full px-3 py-2.5 bg-[#0a0a0f] border border-[#1e1e2e] rounded-xl focus:ring-2 focus:ring-[#6c5ce7]/50 outline-none text-white placeholder-[#4a4a5a]"
-                placeholder="Ej: 50000"
-              />
+              <label className="block text-sm font-medium text-[#7a7a95] mb-2">Salario Mensual ($)</label>
+              <div className="relative">
+                <DollarSign className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-[#4a4a60]" />
+                <input
+                  type="number"
+                  step="0.01"
+                  min="0"
+                  value={salario}
+                  onChange={(e) => setSalario(e.target.value)}
+                  required
+                  className="input-field !pl-11"
+                  placeholder="Ej: 500000"
+                />
+              </div>
             </div>
             <div>
-              <label className="block text-sm font-medium text-[#8888a0] mb-1.5">
-                Tasa de Inflación (%)
-              </label>
-              <input
-                type="number"
-                step="0.1"
-                min="0"
-                value={inflacion}
-                onChange={(e) => setInflacion(e.target.value)}
-                className="w-full px-3 py-2.5 bg-[#0a0a0f] border border-[#1e1e2e] rounded-xl focus:ring-2 focus:ring-[#6c5ce7]/50 outline-none text-white placeholder-[#4a4a5a]"
-                placeholder="Ej: 4.5"
-              />
+              <label className="block text-sm font-medium text-[#7a7a95] mb-2">Tasa de Inflación (%)</label>
+              <div className="relative">
+                <Percent className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-[#4a4a60]" />
+                <input
+                  type="number"
+                  step="0.1"
+                  min="0"
+                  value={inflacion}
+                  onChange={(e) => setInflacion(e.target.value)}
+                  className="input-field !pl-11"
+                  placeholder="Ej: 4.5"
+                />
+              </div>
             </div>
           </div>
-          <button
-            type="submit"
-            disabled={loading}
-            className="bg-[#6c5ce7] text-white px-6 py-2.5 rounded-xl hover:bg-[#7c6ef7] transition font-medium disabled:opacity-50"
-          >
-            {loading ? "Calculando..." : "Calcular Ajuste"}
+          <button type="submit" disabled={loading} className="btn-primary text-sm !py-3">
+            {loading ? (
+              <><Loader2 className="w-4 h-4 animate-spin" /> Calculando...</>
+            ) : (
+              <><Calculator className="w-4 h-4" /> Calcular Ajuste</>
+            )}
           </button>
         </form>
 
-        {/* Resultado */}
+        {/* Results */}
         {resultado && (
-          <div className="bg-[#12121a] rounded-xl p-6 border border-[#1e1e2e] mb-6">
-            <h2 className="font-semibold mb-4 text-white">Resultado del Ajuste</h2>
+          <div className="animate-slide-up mb-8">
+            <div className="flex items-center gap-2.5 mb-5">
+              <ArrowRight className="w-5 h-5 text-[#a78bfa]" />
+              <h2 className="text-sm font-medium text-[#7a7a95] uppercase tracking-wider">Resultado</h2>
+            </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <div className="bg-[#4da6ff]/10 border border-[#4da6ff]/20 rounded-xl p-4">
-                <p className="text-xs text-[#4da6ff] mb-1 uppercase tracking-wider">Salario Nominal</p>
-                <p className="text-xl font-bold text-[#4da6ff]">
+              <div className="stat-card !p-5">
+                <div className="flex items-center gap-3 mb-3">
+                  <div className="w-9 h-9 rounded-xl bg-[#3b82f6]/10 flex items-center justify-center">
+                    <DollarSign className="w-4.5 h-4.5 text-[#60a5fa]" />
+                  </div>
+                  <p className="text-xs text-[#7a7a95] uppercase tracking-wider font-medium">Salario Nominal</p>
+                </div>
+                <p className="text-2xl font-bold text-[#60a5fa] tabular-nums">
                   ${resultado.salario.toLocaleString()}
                 </p>
               </div>
-              <div className="bg-[#ffb347]/10 border border-[#ffb347]/20 rounded-xl p-4">
-                <p className="text-xs text-[#ffb347] mb-1 uppercase tracking-wider">Inflación Aplicada</p>
-                <p className="text-xl font-bold text-[#ffb347]">{resultado.inflacion}%</p>
+
+              <div className="stat-card !p-5">
+                <div className="flex items-center gap-3 mb-3">
+                  <div className="w-9 h-9 rounded-xl bg-[#f59e0b]/10 flex items-center justify-center">
+                    <Percent className="w-4.5 h-4.5 text-[#fbbf24]" />
+                  </div>
+                  <p className="text-xs text-[#7a7a95] uppercase tracking-wider font-medium">Inflación</p>
+                </div>
+                <p className="text-2xl font-bold text-[#fbbf24] tabular-nums">
+                  {resultado.inflacion}%
+                </p>
               </div>
-              <div className="bg-[#00d2a0]/10 border border-[#00d2a0]/20 rounded-xl p-4">
-                <p className="text-xs text-[#00d2a0] mb-1 uppercase tracking-wider">Poder Adquisitivo Real</p>
-                <p className="text-xl font-bold text-[#00d2a0]">
+
+              <div className="stat-card !p-5 glow-success">
+                <div className="flex items-center gap-3 mb-3">
+                  <div className="w-9 h-9 rounded-xl bg-[#10b981]/10 flex items-center justify-center">
+                    <ShieldCheck className="w-4.5 h-4.5 text-[#34d399]" />
+                  </div>
+                  <p className="text-xs text-[#7a7a95] uppercase tracking-wider font-medium">Poder Real</p>
+                </div>
+                <p className="text-2xl font-bold text-[#34d399] tabular-nums">
                   ${resultado.salarioAjustado.toLocaleString(undefined, { maximumFractionDigits: 2 })}
                 </p>
               </div>
-              <div className="bg-[#ff4d6a]/10 border border-[#ff4d6a]/20 rounded-xl p-4">
-                <p className="text-xs text-[#ff4d6a] mb-1 uppercase tracking-wider">Pérdida por Inflación</p>
-                <p className="text-xl font-bold text-[#ff4d6a]">
-                  -${resultado.perdidaPorInflacion.toLocaleString(undefined, { maximumFractionDigits: 2 })}
+
+              <div className="stat-card !p-5 glow-danger">
+                <div className="flex items-center gap-3 mb-3">
+                  <div className="w-9 h-9 rounded-xl bg-[#ef4444]/10 flex items-center justify-center">
+                    <TrendingDown className="w-4.5 h-4.5 text-[#f87171]" />
+                  </div>
+                  <p className="text-xs text-[#7a7a95] uppercase tracking-wider font-medium">Pérdida</p>
+                </div>
+                <p className="text-2xl font-bold text-[#f87171] tabular-nums">
+                  <Minus className="w-5 h-5 inline" />
+                  ${resultado.perdidaPorInflacion.toLocaleString(undefined, { maximumFractionDigits: 2 })}
                 </p>
               </div>
             </div>
           </div>
         )}
 
-        {/* Historial */}
+        {/* History */}
         {historial.length > 0 && (
-          <div className="bg-[#12121a] rounded-xl p-6 border border-[#1e1e2e]">
-            <h2 className="font-semibold mb-4 text-white">Historial de Ajustes</h2>
+          <div className="stat-card !p-6">
+            <div className="flex items-center gap-2.5 mb-6">
+              <History className="w-5 h-5 text-[#a78bfa]" />
+              <h2 className="text-sm font-medium text-[#7a7a95] uppercase tracking-wider">Historial de Ajustes</h2>
+            </div>
             <div className="overflow-x-auto">
               <table className="w-full text-sm">
                 <thead>
-                  <tr className="border-b border-[#1e1e2e] text-left text-[#8888a0]">
-                    <th className="pb-2">Fecha</th>
-                    <th className="pb-2">Salario</th>
-                    <th className="pb-2">Inflación</th>
-                    <th className="pb-2">Poder Real</th>
+                  <tr className="border-b border-[#1a1a2e]">
+                    <th className="pb-3 text-left text-xs text-[#7a7a95] uppercase tracking-wider font-medium">Fecha</th>
+                    <th className="pb-3 text-left text-xs text-[#7a7a95] uppercase tracking-wider font-medium">Salario</th>
+                    <th className="pb-3 text-left text-xs text-[#7a7a95] uppercase tracking-wider font-medium">Inflación</th>
+                    <th className="pb-3 text-left text-xs text-[#7a7a95] uppercase tracking-wider font-medium">Poder Real</th>
                   </tr>
                 </thead>
                 <tbody>
                   {historial.map((h) => (
-                    <tr key={h.id} className="border-b border-[#1e1e2e] last:border-0 text-[#e4e4ed]">
-                      <td className="py-2.5">{new Date(h.fecha).toLocaleDateString("es")}</td>
-                      <td className="py-2.5">${h.salario.toLocaleString()}</td>
-                      <td className="py-2.5 text-[#ffb347]">{h.inflacion}%</td>
-                      <td className="py-2.5 text-[#00d2a0]">
+                    <tr key={h.id} className="border-b border-[#1a1a2e]/50 last:border-0 hover:bg-white/[0.01] transition-colors">
+                      <td className="py-3.5 text-[#f0f0f8]">
+                        {new Date(h.fecha).toLocaleDateString("es", { day: "numeric", month: "short", year: "numeric" })}
+                      </td>
+                      <td className="py-3.5 text-[#f0f0f8] tabular-nums font-medium">${h.salario.toLocaleString()}</td>
+                      <td className="py-3.5">
+                        <span className="tag bg-[#f59e0b]/10 text-[#fbbf24] border border-[#f59e0b]/15">
+                          {h.inflacion}%
+                        </span>
+                      </td>
+                      <td className="py-3.5 text-[#34d399] tabular-nums font-semibold">
                         ${h.salarioAjustado.toLocaleString(undefined, { maximumFractionDigits: 2 })}
                       </td>
                     </tr>

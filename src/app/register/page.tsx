@@ -1,8 +1,9 @@
-"use client";
+﻿"use client";
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { Sparkles, Mail, Lock, User, ArrowRight, AlertCircle, Loader2 } from "lucide-react";
 
 export default function RegisterPage() {
   const [nombre, setNombre] = useState("");
@@ -40,69 +41,102 @@ export default function RegisterPage() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-[#0a0a0f] px-4 relative">
+    <div className="min-h-screen flex items-center justify-center bg-[#06060b] px-4 relative">
       <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute bottom-[20%] right-[30%] w-[400px] h-[400px] bg-violet-600/5 rounded-full blur-[120px]" />
+        <div className="absolute bottom-[15%] right-[20%] w-[500px] h-[500px] bg-[#7c3aed]/5 rounded-full blur-[150px]" />
+        <div className="absolute top-[20%] left-[25%] w-[400px] h-[400px] bg-[#6d28d9]/4 rounded-full blur-[120px]" />
       </div>
-      <div className="bg-[#12121a] border border-[#1e1e2e] rounded-2xl p-8 w-full max-w-md relative z-10 glow-sm">
-        <h1 className="text-2xl font-bold text-center mb-2 text-white">Crear Cuenta</h1>
-        <p className="text-[#8888a0] text-center mb-6 text-sm">Comienza a controlar tus gastos</p>
 
-        {error && (
-          <div className="bg-[#ff4d6a]/10 text-[#ff4d6a] px-4 py-3 rounded-lg mb-4 text-sm border border-[#ff4d6a]/20">
-            {error}
-          </div>
-        )}
-
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <div>
-            <label className="block text-sm font-medium text-[#8888a0] mb-1.5">Nombre</label>
-            <input
-              type="text"
-              value={nombre}
-              onChange={(e) => setNombre(e.target.value)}
-              className="w-full px-4 py-2.5 bg-[#0a0a0f] border border-[#1e1e2e] rounded-xl focus:ring-2 focus:ring-[#6c5ce7]/50 focus:border-[#6c5ce7]/50 outline-none text-white placeholder-[#4a4a5a] text-sm"
-              placeholder="Tu nombre"
-            />
-          </div>
-          <div>
-            <label className="block text-sm font-medium text-[#8888a0] mb-1.5">Email</label>
-            <input
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-              className="w-full px-4 py-2.5 bg-[#0a0a0f] border border-[#1e1e2e] rounded-xl focus:ring-2 focus:ring-[#6c5ce7]/50 focus:border-[#6c5ce7]/50 outline-none text-white placeholder-[#4a4a5a] text-sm"
-              placeholder="tu@email.com"
-            />
-          </div>
-          <div>
-            <label className="block text-sm font-medium text-[#8888a0] mb-1.5">Contraseña</label>
-            <input
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-              minLength={6}
-              className="w-full px-4 py-2.5 bg-[#0a0a0f] border border-[#1e1e2e] rounded-xl focus:ring-2 focus:ring-[#6c5ce7]/50 focus:border-[#6c5ce7]/50 outline-none text-white placeholder-[#4a4a5a] text-sm"
-              placeholder="Mínimo 6 caracteres"
-            />
-          </div>
-          <button
-            type="submit"
-            disabled={loading}
-            className="w-full bg-[#6c5ce7] text-white py-2.5 rounded-xl hover:bg-[#7c6ef7] transition font-medium disabled:opacity-50 shadow-lg shadow-[#6c5ce7]/20"
-          >
-            {loading ? "Creando cuenta..." : "Crear cuenta"}
-          </button>
-        </form>
-
-        <p className="text-center text-sm text-[#8888a0] mt-6">
-          ¿Ya tienes cuenta?{" "}
-          <Link href="/login" className="text-[#a29bfe] font-medium hover:underline">
-            Inicia sesión
+      <div className="animate-scale-in w-full max-w-md relative z-10">
+        <div className="flex justify-center mb-8">
+          <Link href="/" className="flex items-center gap-2.5 group">
+            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#7c3aed] to-[#6d28d9] flex items-center justify-center shadow-lg shadow-purple-500/20 group-hover:shadow-purple-500/30 transition-shadow">
+              <Sparkles className="w-5 h-5 text-white" />
+            </div>
+            <span className="text-xl font-bold gradient-text">GastosIA</span>
           </Link>
-        </p>
+        </div>
+
+        <div className="stat-card !p-8 glow-sm">
+          <div className="text-center mb-8">
+            <h1 className="text-2xl font-bold text-white mb-1.5">Crear cuenta</h1>
+            <p className="text-[#7a7a95] text-sm">Empezá a controlar tus gastos hoy</p>
+          </div>
+
+          {error && (
+            <div className="animate-scale-in flex items-center gap-2.5 bg-[#ef4444]/8 text-[#f87171] px-4 py-3 rounded-xl mb-6 text-sm border border-[#ef4444]/15">
+              <AlertCircle className="w-4 h-4 flex-shrink-0" />
+              {error}
+            </div>
+          )}
+
+          <form onSubmit={handleSubmit} className="space-y-5">
+            <div>
+              <label className="block text-sm font-medium text-[#7a7a95] mb-2">Nombre</label>
+              <div className="relative">
+                <User className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-[#4a4a60]" />
+                <input
+                  type="text"
+                  value={nombre}
+                  onChange={(e) => setNombre(e.target.value)}
+                  className="input-field !pl-11"
+                  placeholder="Tu nombre"
+                />
+              </div>
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-[#7a7a95] mb-2">Email</label>
+              <div className="relative">
+                <Mail className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-[#4a4a60]" />
+                <input
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  required
+                  className="input-field !pl-11"
+                  placeholder="tu@email.com"
+                />
+              </div>
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-[#7a7a95] mb-2">Contraseña</label>
+              <div className="relative">
+                <Lock className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-[#4a4a60]" />
+                <input
+                  type="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  required
+                  minLength={6}
+                  className="input-field !pl-11"
+                  placeholder="Mínimo 6 caracteres"
+                />
+              </div>
+            </div>
+            <button type="submit" disabled={loading} className="btn-primary w-full !py-3.5 text-sm">
+              {loading ? (
+                <>
+                  <Loader2 className="w-4 h-4 animate-spin" />
+                  Creando cuenta...
+                </>
+              ) : (
+                <>
+                  Crear cuenta
+                  <ArrowRight className="w-4 h-4" />
+                </>
+              )}
+            </button>
+          </form>
+
+          <div className="mt-8 pt-6 border-t border-[#1a1a2e] text-center">
+            <p className="text-sm text-[#7a7a95]">
+              ¿Ya tenés cuenta?{" "}
+              <Link href="/login" className="text-[#a78bfa] font-medium hover:text-[#c4b5fd] transition-colors">
+                Iniciá sesión
+              </Link>
+            </p>
+          </div>
+        </div>
       </div>
     </div>
   );

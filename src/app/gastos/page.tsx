@@ -2,6 +2,10 @@
 
 import { useEffect, useState, useCallback } from "react";
 import Navbar from "@/components/Navbar";
+import {
+  Plus, X, Search, Filter, Trash2, Calendar, Tag, FileText, DollarSign,
+  Loader2, Receipt, ArrowDownCircle
+} from "lucide-react";
 
 interface Gasto {
   id: string;
@@ -12,17 +16,14 @@ interface Gasto {
 }
 
 const CATEGORIAS = [
-  "alimentación",
-  "transporte",
-  "vivienda",
-  "entretenimiento",
-  "salud",
-  "educación",
-  "ropa",
-  "servicios",
-  "ahorro",
-  "otro",
+  "alimentación", "transporte", "vivienda", "entretenimiento",
+  "salud", "educación", "ropa", "servicios", "ahorro", "otro",
 ];
+
+const CATEGORY_ICONS: Record<string, string> = {
+  alimentación: "🍽️", transporte: "🚗", vivienda: "🏠", entretenimiento: "🎬",
+  salud: "💊", educación: "📚", ropa: "👕", servicios: "⚡", ahorro: "🏦", otro: "📦",
+};
 
 export default function GastosPage() {
   const [gastos, setGastos] = useState<Gasto[]>([]);
@@ -31,7 +32,6 @@ export default function GastosPage() {
   const [filtroMes, setFiltroMes] = useState("");
   const [filtroCategoria, setFiltroCategoria] = useState("");
 
-  // Form state
   const [descripcion, setDescripcion] = useState("");
   const [monto, setMonto] = useState("");
   const [categoria, setCategoria] = useState("alimentación");
@@ -42,27 +42,22 @@ export default function GastosPage() {
     const params = new URLSearchParams();
     if (filtroMes) params.set("mes", filtroMes);
     if (filtroCategoria) params.set("categoria", filtroCategoria);
-
     const res = await fetch(`/api/gastos?${params}`);
     const data = await res.json();
     setGastos(data);
     setLoading(false);
   }, [filtroMes, filtroCategoria]);
 
-  useEffect(() => {
-    fetchGastos();
-  }, [fetchGastos]);
+  useEffect(() => { fetchGastos(); }, [fetchGastos]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setSaving(true);
-
     await fetch("/api/gastos", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ descripcion, monto: Number(monto), categoria, fecha }),
     });
-
     setDescripcion("");
     setMonto("");
     setCategoria("alimentación");
@@ -83,150 +78,196 @@ export default function GastosPage() {
   return (
     <>
       <Navbar />
-      <div className="max-w-5xl mx-auto px-4 py-8">
-        <div className="flex flex-wrap items-center justify-between gap-4 mb-6">
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 py-8">
+        {/* Header */}
+        <div className="flex flex-wrap items-center justify-between gap-4 mb-8">
           <div>
-            <h1 className="text-2xl font-bold text-white">Mis Gastos</h1>
-            <p className="text-[#8888a0] text-sm">
-              {gastos.length} gastos · Total: ${total.toLocaleString()}
-            </p>
+            <h1 className="text-2xl font-bold text-white mb-1">Mis Gastos</h1>
+            <div className="flex items-center gap-3 text-sm text-[#7a7a95]">
+              <span className="flex items-center gap-1.5">
+                <Receipt className="w-3.5 h-3.5" />
+                {gastos.length} registros
+              </span>
+              <span className="w-1 h-1 rounded-full bg-[#2a2a3e]" />
+              <span className="flex items-center gap-1.5 text-[#f87171] font-medium">
+                <ArrowDownCircle className="w-3.5 h-3.5" />
+                ${total.toLocaleString()}
+              </span>
+            </div>
           </div>
           <button
             onClick={() => setShowForm(!showForm)}
-            className="bg-[#6c5ce7] text-white px-4 py-2 rounded-xl hover:bg-[#7c6ef7] transition text-sm font-medium shadow-lg shadow-[#6c5ce7]/20"
+            className={showForm ? "btn-secondary text-sm !px-4 !py-2.5" : "btn-primary text-sm !px-5 !py-2.5"}
           >
-            {showForm ? "Cancelar" : "+ Nuevo Gasto"}
+            {showForm ? (
+              <><X className="w-4 h-4" /> Cancelar</>
+            ) : (
+              <><Plus className="w-4 h-4" /> Nuevo Gasto</>
+            )}
           </button>
         </div>
 
         {/* Form */}
         {showForm && (
-          <form onSubmit={handleSubmit} className="bg-[#12121a] rounded-xl p-6 border border-[#1e1e2e] mb-6">
+          <form onSubmit={handleSubmit} className="animate-slide-up stat-card !p-6 mb-8">
+            <h3 className="text-sm font-medium text-[#7a7a95] uppercase tracking-wider mb-5">Registrar Gasto</h3>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
               <div>
-                <label className="block text-sm font-medium text-[#8888a0] mb-1.5">Descripción</label>
-                <input
-                  type="text"
-                  value={descripcion}
-                  onChange={(e) => setDescripcion(e.target.value)}
-                  required
-                  className="w-full px-3 py-2.5 bg-[#0a0a0f] border border-[#1e1e2e] rounded-xl focus:ring-2 focus:ring-[#6c5ce7]/50 outline-none text-sm text-white placeholder-[#4a4a5a]"
-                  placeholder="Ej: Supermercado"
-                />
+                <label className="block text-sm font-medium text-[#7a7a95] mb-2">Descripción</label>
+                <div className="relative">
+                  <FileText className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-[#4a4a60]" />
+                  <input
+                    type="text"
+                    value={descripcion}
+                    onChange={(e) => setDescripcion(e.target.value)}
+                    required
+                    className="input-field !pl-11 !py-2.5 text-sm"
+                    placeholder="Ej: Supermercado"
+                  />
+                </div>
               </div>
               <div>
-                <label className="block text-sm font-medium text-[#8888a0] mb-1.5">Monto ($)</label>
-                <input
-                  type="number"
-                  step="0.01"
-                  min="0"
-                  value={monto}
-                  onChange={(e) => setMonto(e.target.value)}
-                  required
-                  className="w-full px-3 py-2.5 bg-[#0a0a0f] border border-[#1e1e2e] rounded-xl focus:ring-2 focus:ring-[#6c5ce7]/50 outline-none text-sm text-white placeholder-[#4a4a5a]"
-                  placeholder="0.00"
-                />
+                <label className="block text-sm font-medium text-[#7a7a95] mb-2">Monto ($)</label>
+                <div className="relative">
+                  <DollarSign className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-[#4a4a60]" />
+                  <input
+                    type="number"
+                    step="0.01"
+                    min="0"
+                    value={monto}
+                    onChange={(e) => setMonto(e.target.value)}
+                    required
+                    className="input-field !pl-11 !py-2.5 text-sm"
+                    placeholder="0.00"
+                  />
+                </div>
               </div>
               <div>
-                <label className="block text-sm font-medium text-[#8888a0] mb-1.5">Categoría</label>
-                <select
-                  value={categoria}
-                  onChange={(e) => setCategoria(e.target.value)}
-                  className="w-full px-3 py-2.5 bg-[#0a0a0f] border border-[#1e1e2e] rounded-xl focus:ring-2 focus:ring-[#6c5ce7]/50 outline-none text-sm text-white"
-                >
-                  {CATEGORIAS.map((c) => (
-                    <option key={c} value={c}>
-                      {c.charAt(0).toUpperCase() + c.slice(1)}
-                    </option>
-                  ))}
-                </select>
+                <label className="block text-sm font-medium text-[#7a7a95] mb-2">Categoría</label>
+                <div className="relative">
+                  <Tag className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-[#4a4a60]" />
+                  <select
+                    value={categoria}
+                    onChange={(e) => setCategoria(e.target.value)}
+                    className="input-field !pl-11 !py-2.5 text-sm appearance-none cursor-pointer"
+                  >
+                    {CATEGORIAS.map((c) => (
+                      <option key={c} value={c}>
+                        {CATEGORY_ICONS[c]} {c.charAt(0).toUpperCase() + c.slice(1)}
+                      </option>
+                    ))}
+                  </select>
+                </div>
               </div>
               <div>
-                <label className="block text-sm font-medium text-[#8888a0] mb-1.5">Fecha</label>
-                <input
-                  type="date"
-                  value={fecha}
-                  onChange={(e) => setFecha(e.target.value)}
-                  className="w-full px-3 py-2.5 bg-[#0a0a0f] border border-[#1e1e2e] rounded-xl focus:ring-2 focus:ring-[#6c5ce7]/50 outline-none text-sm text-white"
-                />
+                <label className="block text-sm font-medium text-[#7a7a95] mb-2">Fecha</label>
+                <div className="relative">
+                  <Calendar className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-[#4a4a60]" />
+                  <input
+                    type="date"
+                    value={fecha}
+                    onChange={(e) => setFecha(e.target.value)}
+                    className="input-field !pl-11 !py-2.5 text-sm"
+                  />
+                </div>
               </div>
             </div>
-            <button
-              type="submit"
-              disabled={saving}
-              className="mt-4 bg-[#6c5ce7] text-white px-6 py-2.5 rounded-xl hover:bg-[#7c6ef7] transition text-sm font-medium disabled:opacity-50"
-            >
-              {saving ? "Guardando..." : "Guardar Gasto"}
-            </button>
+            <div className="mt-5 flex justify-end">
+              <button type="submit" disabled={saving} className="btn-primary text-sm !px-6 !py-2.5">
+                {saving ? (
+                  <><Loader2 className="w-4 h-4 animate-spin" /> Guardando...</>
+                ) : (
+                  <><Plus className="w-4 h-4" /> Guardar Gasto</>
+                )}
+              </button>
+            </div>
           </form>
         )}
 
         {/* Filters */}
-        <div className="flex flex-wrap gap-3 mb-4">
-          <input
-            type="month"
-            value={filtroMes}
-            onChange={(e) => setFiltroMes(e.target.value)}
-            className="px-3 py-2 bg-[#12121a] border border-[#1e1e2e] rounded-xl text-sm text-white"
-            placeholder="Filtrar por mes"
-          />
+        <div className="flex flex-wrap items-center gap-3 mb-6">
+          <div className="flex items-center gap-2 text-[#7a7a95] text-sm">
+            <Filter className="w-4 h-4" />
+            <span className="hidden sm:inline">Filtrar:</span>
+          </div>
+          <div className="relative">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-[#4a4a60]" />
+            <input
+              type="month"
+              value={filtroMes}
+              onChange={(e) => setFiltroMes(e.target.value)}
+              className="pl-9 pr-3 py-2 bg-[#111119] border border-[#1a1a2e] rounded-lg text-sm text-white focus:border-[#7c3aed]/30 focus:outline-none transition-colors"
+              placeholder="Mes"
+            />
+          </div>
           <select
             value={filtroCategoria}
             onChange={(e) => setFiltroCategoria(e.target.value)}
-            className="px-3 py-2 bg-[#12121a] border border-[#1e1e2e] rounded-xl text-sm text-white"
+            className="px-3 py-2 bg-[#111119] border border-[#1a1a2e] rounded-lg text-sm text-white focus:border-[#7c3aed]/30 focus:outline-none transition-colors cursor-pointer"
           >
             <option value="">Todas las categorías</option>
             {CATEGORIAS.map((c) => (
               <option key={c} value={c}>
-                {c.charAt(0).toUpperCase() + c.slice(1)}
+                {CATEGORY_ICONS[c]} {c.charAt(0).toUpperCase() + c.slice(1)}
               </option>
             ))}
           </select>
           {(filtroMes || filtroCategoria) && (
             <button
-              onClick={() => {
-                setFiltroMes("");
-                setFiltroCategoria("");
-              }}
-              className="text-sm text-[#a29bfe] hover:underline"
+              onClick={() => { setFiltroMes(""); setFiltroCategoria(""); }}
+              className="btn-ghost text-xs !px-3 !py-1.5 text-[#a78bfa]"
             >
-              Limpiar filtros
+              <X className="w-3 h-3" />
+              Limpiar
             </button>
           )}
         </div>
 
         {/* List */}
         {loading ? (
-          <div className="text-[#8888a0] text-center py-10">Cargando...</div>
+          <div className="flex items-center justify-center gap-3 py-16 text-[#7a7a95]">
+            <Loader2 className="w-5 h-5 animate-spin" />
+            Cargando gastos...
+          </div>
         ) : gastos.length === 0 ? (
-          <div className="text-center py-16 text-[#8888a0]">
-            <p className="text-4xl mb-2">💸</p>
-            <p>No hay gastos registrados</p>
+          <div className="text-center py-20">
+            <div className="w-16 h-16 rounded-2xl bg-[#111119] border border-[#1a1a2e] flex items-center justify-center mx-auto mb-4">
+              <Receipt className="w-8 h-8 text-[#4a4a60]" />
+            </div>
+            <p className="text-[#7a7a95] font-medium mb-1">No hay gastos registrados</p>
+            <p className="text-sm text-[#4a4a60]">Hacé clic en &quot;Nuevo Gasto&quot; para empezar</p>
           </div>
         ) : (
           <div className="space-y-2">
-            {gastos.map((gasto) => (
+            {gastos.map((gasto, i) => (
               <div
                 key={gasto.id}
-                className="bg-[#12121a] rounded-xl p-4 border border-[#1e1e2e] flex items-center justify-between gap-4 hover:border-[#2e2e3e] transition"
+                className="animate-fade-in stat-card !p-4 !rounded-xl flex items-center justify-between gap-4 group"
+                style={{ animationDelay: `${i * 30}ms` }}
               >
-                <div className="flex-1 min-w-0">
-                  <p className="font-medium text-white truncate">{gasto.descripcion}</p>
-                  <p className="text-sm text-[#8888a0]">
-                    <span className="capitalize">{gasto.categoria}</span> ·{" "}
-                    {new Date(gasto.fecha).toLocaleDateString("es")}
-                  </p>
+                <div className="flex items-center gap-4 flex-1 min-w-0">
+                  <div className="w-10 h-10 rounded-xl bg-white/[0.03] border border-[#1a1a2e] flex items-center justify-center text-lg flex-shrink-0">
+                    {CATEGORY_ICONS[gasto.categoria] || "📦"}
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <p className="font-medium text-white truncate text-sm">{gasto.descripcion}</p>
+                    <p className="text-xs text-[#7a7a95] flex items-center gap-1.5 mt-0.5">
+                      <span className="capitalize">{gasto.categoria}</span>
+                      <span className="w-1 h-1 rounded-full bg-[#2a2a3e]" />
+                      {new Date(gasto.fecha).toLocaleDateString("es", { day: "numeric", month: "short", year: "numeric" })}
+                    </p>
+                  </div>
                 </div>
                 <div className="flex items-center gap-3">
-                  <span className="text-lg font-semibold text-[#ff4d6a] whitespace-nowrap">
+                  <span className="text-base font-bold text-[#f87171] whitespace-nowrap tabular-nums">
                     -${gasto.monto.toLocaleString()}
                   </span>
                   <button
                     onClick={() => handleDelete(gasto.id)}
-                    className="text-[#4a4a5a] hover:text-[#ff4d6a] transition text-sm"
+                    className="btn-danger opacity-0 group-hover:opacity-100 !p-2"
                     title="Eliminar"
                   >
-                    ✕
+                    <Trash2 className="w-4 h-4" />
                   </button>
                 </div>
               </div>
