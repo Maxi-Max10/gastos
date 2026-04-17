@@ -48,7 +48,7 @@ export async function PUT(
       ...(descripcion && { descripcion }),
       ...(monto !== undefined && { monto: Number(monto) }),
       ...(categoria && { categoria }),
-      ...(fecha && { fecha: new Date(fecha) }),
+      ...(fecha && { fecha: new Date(fecha + "T12:00:00") }),
     },
   });
 

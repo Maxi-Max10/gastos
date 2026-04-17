@@ -55,7 +55,7 @@ export async function POST(req: Request) {
         descripcion,
         monto: Number(monto),
         categoria,
-        fecha: fecha ? new Date(fecha) : new Date(),
+        fecha: fecha ? new Date(fecha + "T12:00:00") : new Date(),
         userId,
       },
     });

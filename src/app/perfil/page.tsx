@@ -4,12 +4,8 @@ import { useEffect, useState } from "react";
 import Navbar from "@/components/Navbar";
 import {
   DollarSign, TrendingDown, Percent, ShieldCheck, Calculator,
-  Loader2, History, ArrowRight, Minus
+  Loader2, History, ArrowRight, Minus, TrendingUp, BarChart3
 } from "lucide-react";
-
-function formatARS(n: number): string {
-  return n.toLocaleString("es-AR", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-}
 
 function formatARS(n: number): string {
   return n.toLocaleString("es-AR", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
@@ -34,6 +30,8 @@ export default function PerfilPage() {
   } | null>(null);
   const [historial, setHistorial] = useState<SalarioHistorial[]>([]);
   const [loading, setLoading] = useState(false);
+  const [ipcData, setIpcData] = useState<{ fecha: string; valor: number }[]>([]);
+  const [ipcLoading, setIpcLoading] = useState(true);
 
   useEffect(() => {
     fetch("/api/salario")
@@ -46,6 +44,15 @@ export default function PerfilPage() {
         setHistorial(data.historial || []);
       })
       .catch(() => {});
+
+    fetch("/api/ipc")
+      .then((r) => {
+        if (!r.ok) throw new Error();
+        return r.json();
+      })
+      .then((data) => setIpcData(data.ipc || []))
+      .catch(() => {})
+      .finally(() => setIpcLoading(false));
   }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -139,7 +146,7 @@ export default function PerfilPage() {
                 <div className="flex items-center gap-3 mb-3">
                   <div className="w-9 h-9 rounded-xl bg-[#3b82f6]/10 flex items-center justify-center">
                     <DollarSign className="w-4.5 h-4.5 text-[#60a5fa]" />
-                  </formatARS(resultado.salario
+                  </div>
                   <p className="text-xs text-[#7a7a95] uppercase tracking-wider font-medium">Salario Nominal</p>
                 </div>
                 <p className="text-2xl font-bold text-[#60a5fa] tabular-nums">
@@ -163,7 +170,7 @@ export default function PerfilPage() {
                 <div className="flex items-center gap-3 mb-3">
                   <div className="w-9 h-9 rounded-xl bg-[#10b981]/10 flex items-center justify-center">
                     <ShieldCheck className="w-4.5 h-4.5 text-[#34d399]" />
-                  </formatARS(resultado.salarioAjustado
+                  </div>
                   <p className="text-xs text-[#7a7a95] uppercase tracking-wider font-medium">Poder Real</p>
                 </div>
                 <p className="text-2xl font-bold text-[#34d399] tabular-nums">
@@ -176,7 +183,7 @@ export default function PerfilPage() {
                   <div className="w-9 h-9 rounded-xl bg-[#ef4444]/10 flex items-center justify-center">
                     <TrendingDown className="w-4.5 h-4.5 text-[#f87171]" />
                   </div>
-                  <pformatARS(resultado.perdidaPorInflacion
+                  <p className="text-xs text-[#7a7a95] uppercase tracking-wider font-medium">Pérdida por Inflación</p>
                 </div>
                 <p className="text-2xl font-bold text-[#f87171] tabular-nums">
                   <Minus className="w-5 h-5 inline" />
@@ -206,14 +213,14 @@ export default function PerfilPage() {
                 </thead>
                 <tbody>
                   {historial.map((h) => (
-                    <tr key={h.id} className="border-b border-[#1a1a2e]/50 last:border-formatARS(h.salarioransition-colors">
+                    <tr key={h.id} className="border-b border-[#1a1a2e]/50 last:border-0 hover:bg-white/[0.02] transition-colors">
                       <td className="py-3.5 text-[#f0f0f8]">
                         {new Date(h.fecha).toLocaleDateString("es", { day: "numeric", month: "short", year: "numeric" })}
                       </td>
                       <td className="py-3.5 text-[#f0f0f8] tabular-nums font-medium">${formatARS(h.salario)}</td>
                       <td className="py-3.5">
                         <span className="tag bg-[#f59e0b]/10 text-[#fbbf24] border border-[#f59e0b]/15">
-                          formatARS(h.salarioAjustado
+                          {h.inflacion}%
                         </span>
                       </td>
                       <td className="py-3.5 text-[#34d399] tabular-nums font-semibold">
@@ -226,6 +233,103 @@ export default function PerfilPage() {
             </div>
           </div>
         )}
+
+        {/* IPC Projection */}
+        <div className="stat-card !p-6 mt-8">
+          <div className="flex items-center gap-2.5 mb-6">
+            <TrendingUp className="w-5 h-5 text-[#a78bfa]" />
+            <h2 className="text-sm font-medium text-[#7a7a95] uppercase tracking-wider">
+              Proyección Salarial por IPC
+            </h2>
+          </div>
+
+          {ipcLoading ? (
+            <div className="flex items-center justify-center py-8">
+              <Loader2 className="w-6 h-6 animate-spin text-[#7c3aed]" />
+            </div>
+          ) : ipcData.length === 0 ? (
+            <p className="text-[#7a7a95] text-sm text-center py-8">No se pudo obtener datos del IPC</p>
+          ) : (
+            <>
+              {(() => {
+                const ultimoIpc = ipcData[ipcData.length - 1];
+                const salarioNum = Number(salario) || 0;
+                const salarioProyectado = salarioNum * (1 + ultimoIpc.valor / 100);
+                const aumento = salarioProyectado - salarioNum;
+                const mesIpc = new Date(ultimoIpc.fecha).toLocaleDateString("es-AR", { month: "long", year: "numeric" });
+
+                return (
+                  <div className="space-y-6">
+                    {/* Projection Cards */}
+                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                      <div className="stat-card !p-5">
+                        <p className="text-xs text-[#7a7a95] uppercase tracking-wider font-medium mb-2">
+                          Último IPC ({mesIpc})
+                        </p>
+                        <p className="text-2xl font-bold text-[#fbbf24] tabular-nums">
+                          {ultimoIpc.valor}%
+                        </p>
+                      </div>
+
+                      <div className="stat-card !p-5 glow-success">
+                        <p className="text-xs text-[#7a7a95] uppercase tracking-wider font-medium mb-2">
+                          Salario Proyectado
+                        </p>
+                        <p className="text-2xl font-bold text-[#34d399] tabular-nums">
+                          {salarioNum > 0 ? `$${formatARS(salarioProyectado)}` : "—"}
+                        </p>
+                      </div>
+
+                      <div className="stat-card !p-5">
+                        <p className="text-xs text-[#7a7a95] uppercase tracking-wider font-medium mb-2">
+                          Aumento Estimado
+                        </p>
+                        <p className="text-2xl font-bold text-[#a78bfa] tabular-nums">
+                          {salarioNum > 0 ? `+$${formatARS(aumento)}` : "—"}
+                        </p>
+                      </div>
+                    </div>
+
+                    {/* IPC History Chart */}
+                    <div>
+                      <div className="flex items-center gap-2 mb-4">
+                        <BarChart3 className="w-4 h-4 text-[#7a7a95]" />
+                        <p className="text-xs text-[#7a7a95] uppercase tracking-wider font-medium">IPC Últimos Meses</p>
+                      </div>
+                      <div className="space-y-3">
+                        {ipcData.map((item) => {
+                          const mes = new Date(item.fecha).toLocaleDateString("es-AR", { month: "short", year: "numeric" });
+                          const maxVal = Math.max(...ipcData.map((d) => d.valor));
+                          return (
+                            <div key={item.fecha}>
+                              <div className="flex justify-between text-sm mb-1.5">
+                                <span className="text-[#7a7a95] font-medium capitalize">{mes}</span>
+                                <span className="font-semibold text-white tabular-nums">{item.valor}%</span>
+                              </div>
+                              <div className="w-full bg-[#0c0c14] rounded-full h-2.5 overflow-hidden">
+                                <div
+                                  className="h-full rounded-full transition-all duration-700 ease-out"
+                                  style={{
+                                    width: `${(item.valor / maxVal) * 100}%`,
+                                    background: "linear-gradient(90deg, #7c3aed, #a78bfa)",
+                                  }}
+                                />
+                              </div>
+                            </div>
+                          );
+                        })}
+                      </div>
+                    </div>
+
+                    <p className="text-xs text-[#4a4a60] text-center">
+                      Fuente: INDEC · Índice de Precios al Consumidor (IPC)
+                    </p>
+                  </div>
+                );
+              })()}
+            </>
+          )}
+        </div>
       </div>
     </>
   );

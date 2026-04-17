@@ -8,10 +8,6 @@ function formatARS(n: number): string {
   return n.toLocaleString("es-AR", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 }
 
-function formatARS(n: number): string {
-  return n.toLocaleString("es-AR", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-}
-
 interface Resumen {
   totalGastos: number;
   gastosMesActual: number;
@@ -100,7 +96,7 @@ export default function DashboardPage() {
             <div className="flex items-center justify-between mb-4">
               <p className="text-xs text-[#7a7a95] uppercase tracking-wider font-medium">Salario Mensual</p>
               <div className="w-10 h-10 rounded-xl bg-[#7c3aed]/10 flex items-center justify-center group-hover:bg-[#7c3aed]/15 transition-colors">
-                formatARS(resumen.salariotext-[#a78bfa]" />
+                <DollarSign className="w-5 h-5 text-[#a78bfa]" />
               </div>
             </div>
             <p className="text-3xl font-bold text-[#a78bfa] tracking-tight">
@@ -112,7 +108,7 @@ export default function DashboardPage() {
             <div className="flex items-center justify-between mb-4">
               <p className="text-xs text-[#7a7a95] uppercase tracking-wider font-medium">Gastos del Mes</p>
               <div className="w-10 h-10 rounded-xl bg-[#ef4444]/10 flex items-center justify-center group-hover:bg-[#ef4444]/15 transition-colors">
-                formatARS(resumen.gastosMesActual#f87171]" />
+                <TrendingDown className="w-5 h-5 text-[#f87171]" />
               </div>
             </div>
             <p className="text-3xl font-bold text-[#f87171] tracking-tight">
@@ -130,7 +126,7 @@ export default function DashboardPage() {
               }`}>
                 <Wallet className={`w-5 h-5 ${resumen.disponible >= 0 ? "text-[#34d399]" : "text-[#f87171]"}`} />
               </div>
-            </diformatARS(resumen.disponible
+            </div>
             <p className={`text-3xl font-bold tracking-tight ${
               resumen.disponible >= 0 ? "text-[#34d399]" : "text-[#f87171]"
             }`}>
@@ -161,7 +157,7 @@ export default function DashboardPage() {
               <p className="text-[#7a7a95] text-sm py-8 text-center">Sin datos aún</p>
             ) : (
               <div className="space-y-4">
-                {meses.map(([mes, monto]) => (formatARS(monto
+                {meses.map(([mes, monto]) => (
                   <div key={mes} className="group/bar">
                     <div className="flex justify-between text-sm mb-2">
                       <span className="text-[#7a7a95] font-medium">{mes}</span>
@@ -199,7 +195,7 @@ export default function DashboardPage() {
                     <div key={cat} className="group/cat">
                       <div className="flex justify-between text-sm mb-2">
                         <div className="flex items-center gap-2">
-                          <dformatARS(monto-2.5 rounded-full" style={{ background: color }} />
+                          <div className="w-2.5 h-2.5 rounded-full" style={{ background: color }} />
                           <span className="text-[#7a7a95] capitalize font-medium">{cat}</span>
                         </div>
                         <span className="font-semibold text-white tabular-nums">

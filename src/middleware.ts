@@ -8,5 +8,5 @@ export default withAuth(function middleware(req: NextRequest) {}, {
 });
 
 export const config = {
-  matcher: ["/dashboard/:path*", "/gastos/:path*", "/chat/:path*", "/perfil/:path*", "/api/gastos/:path*", "/api/salario/:path*", "/api/chat/:path*", "/api/resumen/:path*"],
+  matcher: ["/dashboard/:path*", "/gastos/:path*", "/chat/:path*", "/perfil/:path*", "/api/gastos/:path*", "/api/salario/:path*", "/api/chat/:path*", "/api/resumen/:path*", "/api/ipc/:path*"],
 };
