@@ -306,9 +306,21 @@ export default function GastosPage() {
 
         {/* List */}
         {loading ? (
-          <div className="flex items-center justify-center gap-3 py-16 text-[#7a7a95]">
-            <Loader2 className="w-5 h-5 animate-spin" />
-            Cargando gastos...
+          <div className="space-y-2">
+            {[...Array(6)].map((_, i) => (
+              <div key={i} className="stat-card !p-4 !rounded-xl" style={{ animationDelay: `${i * 60}ms` }}>
+                <div className="flex items-center justify-between gap-4">
+                  <div className="flex items-center gap-4 flex-1">
+                    <div className="skeleton w-10 h-10 !rounded-xl flex-shrink-0" />
+                    <div className="flex-1">
+                      <div className="skeleton-text h-4 w-32 mb-2" />
+                      <div className="skeleton-text h-3 w-44" />
+                    </div>
+                  </div>
+                  <div className="skeleton-text h-5 w-20" />
+                </div>
+              </div>
+            ))}
           </div>
         ) : gastos.length === 0 ? (
           <div className="text-center py-20">

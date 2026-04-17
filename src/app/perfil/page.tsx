@@ -244,8 +244,29 @@ export default function PerfilPage() {
           </div>
 
           {ipcLoading ? (
-            <div className="flex items-center justify-center py-8">
-              <Loader2 className="w-6 h-6 animate-spin text-[#7c3aed]" />
+            <div className="space-y-6">
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                {[...Array(3)].map((_, i) => (
+                  <div key={i} className="stat-card !p-5">
+                    <div className="skeleton-text h-3 w-28 mb-3" />
+                    <div className="skeleton-text h-8 w-24" />
+                  </div>
+                ))}
+              </div>
+              <div>
+                <div className="skeleton-text h-3 w-32 mb-4" />
+                <div className="space-y-3">
+                  {[...Array(4)].map((_, i) => (
+                    <div key={i}>
+                      <div className="flex justify-between mb-1.5">
+                        <div className="skeleton-text h-4 w-16" />
+                        <div className="skeleton-text h-4 w-10" />
+                      </div>
+                      <div className="skeleton h-2.5 w-full !rounded-full" />
+                    </div>
+                  ))}
+                </div>
+              </div>
             </div>
           ) : ipcData.length === 0 ? (
             <p className="text-[#7a7a95] text-sm text-center py-8">No se pudo obtener datos del IPC</p>

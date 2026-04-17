@@ -51,10 +51,42 @@ export default function DashboardPage() {
     return (
       <>
         <Navbar />
-        <div className="flex items-center justify-center min-h-[60vh]">
-          <div className="flex items-center gap-3 text-[#7a7a95]">
-            <Loader2 className="w-5 h-5 animate-spin" />
-            <span>Cargando dashboard...</span>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+          <div className="mb-8">
+            <div className="skeleton-text h-7 w-40 mb-2" />
+            <div className="skeleton-text h-4 w-64" />
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+            {[...Array(4)].map((_, i) => (
+              <div key={i} className="stat-card !p-6" style={{ animationDelay: `${i * 100}ms` }}>
+                <div className="flex items-center justify-between mb-4">
+                  <div className="skeleton-text h-3 w-24" />
+                  <div className="skeleton w-10 h-10 !rounded-xl" />
+                </div>
+                <div className="skeleton-text h-9 w-32" />
+              </div>
+            ))}
+          </div>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            {[...Array(2)].map((_, i) => (
+              <div key={i} className="stat-card">
+                <div className="flex items-center gap-2.5 mb-6">
+                  <div className="skeleton w-5 h-5 !rounded-lg" />
+                  <div className="skeleton-text h-5 w-36" />
+                </div>
+                <div className="space-y-4">
+                  {[...Array(3)].map((_, j) => (
+                    <div key={j}>
+                      <div className="flex justify-between mb-2">
+                        <div className="skeleton-text h-4 w-20" />
+                        <div className="skeleton-text h-4 w-24" />
+                      </div>
+                      <div className="skeleton h-3 w-full !rounded-full" />
+                    </div>
+                  ))}
+                </div>
+              </div>
+            ))}
           </div>
         </div>
       </>
