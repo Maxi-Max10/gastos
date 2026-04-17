@@ -3,6 +3,10 @@
 import { useEffect, useState } from "react";
 import Navbar from "@/components/Navbar";
 import { DollarSign, TrendingDown, Wallet, Hash, BarChart3, PieChart, Loader2 } from "lucide-react";
+import {
+  BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
+  PieChart as RechartsPie, Pie, Cell, Legend,
+} from "recharts";
 
 function formatARS(n: number): string {
   return n.toLocaleString("es-AR", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
@@ -111,7 +115,45 @@ export default function DashboardPage() {
 
   const categorias = Object.entries(resumen.gastosPorCategoria).sort((a, b) => b[1] - a[1]);
   const meses = Object.entries(resumen.gastosPorMes);
-  const maxMes = Math.max(...meses.map(([, v]) => v), 1);
+
+  const mesData = meses.map(([mes, monto]) => {
+    const [y, m] = mes.split("-");
+    const label = new Date(Number(y), Number(m) - 1).toLocaleDateString("es-AR", { month: "short" }).replace(".", "");
+    return { name: label.charAt(0).toUpperCase() + label.slice(1), monto };
+  });
+
+  const catData = categorias.map(([cat, monto]) => ({
+    name: cat.charAt(0).toUpperCase() + cat.slice(1),
+    value: monto,
+    color: CATEGORY_COLORS[cat] || "#6b7280",
+  }));
+
+  const CustomTooltip = ({ active, payload, label }: { active?: boolean; payload?: Array<{ value: number }>; label?: string }) => {
+    if (active && payload && payload.length) {
+      return (
+        <div className="bg-[#1a1a25] border border-[#2a2a3e] rounded-xl px-4 py-2.5 shadow-xl">
+          <p className="text-xs text-[#7a7a95] mb-0.5">{label}</p>
+          <p className="text-sm font-bold text-white">${formatARS(payload[0].value)}</p>
+        </div>
+      );
+    }
+    return null;
+  };
+
+  const PieTooltip = ({ active, payload }: { active?: boolean; payload?: Array<{ name: string; value: number; payload: { color: string } }> }) => {
+    if (active && payload && payload.length) {
+      return (
+        <div className="bg-[#1a1a25] border border-[#2a2a3e] rounded-xl px-4 py-2.5 shadow-xl">
+          <div className="flex items-center gap-2 mb-0.5">
+            <div className="w-2.5 h-2.5 rounded-full" style={{ background: payload[0].payload.color }} />
+            <p className="text-xs text-[#7a7a95]">{payload[0].name}</p>
+          </div>
+          <p className="text-sm font-bold text-white">${formatARS(payload[0].value)}</p>
+        </div>
+      );
+    }
+    return null;
+  };
 
   return (
     <>
@@ -179,72 +221,83 @@ export default function DashboardPage() {
 
         {/* Charts */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          {/* Monthly Chart */}
+          {/* Monthly Bar Chart */}
           <div className="stat-card">
             <div className="flex items-center gap-2.5 mb-6">
               <BarChart3 className="w-5 h-5 text-[#a78bfa]" />
               <h2 className="font-semibold text-white">Gastos por Mes</h2>
             </div>
-            {meses.length === 0 ? (
+            {mesData.length === 0 ? (
               <p className="text-[#7a7a95] text-sm py-8 text-center">Sin datos aún</p>
             ) : (
-              <div className="space-y-4">
-                {meses.map(([mes, monto]) => (
-                  <div key={mes} className="group/bar">
-                    <div className="flex justify-between text-sm mb-2">
-                      <span className="text-[#7a7a95] font-medium">{mes}</span>
-                      <span className="font-semibold text-white tabular-nums">${formatARS(monto)}</span>
-                    </div>
-                    <div className="w-full bg-[#0c0c14] rounded-full h-3 overflow-hidden">
-                      <div
-                        className="h-full rounded-full transition-all duration-700 ease-out"
-                        style={{
-                          width: `${(monto / maxMes) * 100}%`,
-                          background: "linear-gradient(90deg, #7c3aed, #a78bfa)",
-                        }}
-                      />
-                    </div>
-                  </div>
-                ))}
-              </div>
+              <ResponsiveContainer width="100%" height={280}>
+                <BarChart data={mesData} margin={{ top: 5, right: 5, left: -10, bottom: 5 }}>
+                  <CartesianGrid strokeDasharray="3 3" stroke="#1a1a2e" vertical={false} />
+                  <XAxis
+                    dataKey="name"
+                    tick={{ fill: "#7a7a95", fontSize: 12 }}
+                    axisLine={{ stroke: "#1a1a2e" }}
+                    tickLine={false}
+                  />
+                  <YAxis
+                    tick={{ fill: "#7a7a95", fontSize: 11 }}
+                    axisLine={false}
+                    tickLine={false}
+                    tickFormatter={(v: number) => v >= 1000 ? `${(v / 1000).toFixed(0)}k` : String(v)}
+                  />
+                  <Tooltip content={<CustomTooltip />} cursor={{ fill: "rgba(124, 58, 237, 0.08)" }} />
+                  <Bar
+                    dataKey="monto"
+                    fill="url(#barGradient)"
+                    radius={[6, 6, 0, 0]}
+                    maxBarSize={48}
+                  />
+                  <defs>
+                    <linearGradient id="barGradient" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="0%" stopColor="#a78bfa" />
+                      <stop offset="100%" stopColor="#7c3aed" />
+                    </linearGradient>
+                  </defs>
+                </BarChart>
+              </ResponsiveContainer>
             )}
           </div>
 
-          {/* Category Chart */}
+          {/* Category Donut Chart */}
           <div className="stat-card">
             <div className="flex items-center gap-2.5 mb-6">
               <PieChart className="w-5 h-5 text-[#34d399]" />
               <h2 className="font-semibold text-white">Gastos por Categoría</h2>
             </div>
-            {categorias.length === 0 ? (
+            {catData.length === 0 ? (
               <p className="text-[#7a7a95] text-sm py-8 text-center">No hay gastos registrados</p>
             ) : (
-              <div className="space-y-3">
-                {categorias.map(([cat, monto]) => {
-                  const pct = resumen.totalGastos > 0 ? (monto / resumen.totalGastos) * 100 : 0;
-                  const color = CATEGORY_COLORS[cat] || "#6b7280";
-                  return (
-                    <div key={cat} className="group/cat">
-                      <div className="flex justify-between text-sm mb-2">
-                        <div className="flex items-center gap-2">
-                          <div className="w-2.5 h-2.5 rounded-full" style={{ background: color }} />
-                          <span className="text-[#7a7a95] capitalize font-medium">{cat}</span>
-                        </div>
-                        <span className="font-semibold text-white tabular-nums">
-                          ${formatARS(monto)}{" "}
-                          <span className="text-xs text-[#7a7a95] font-normal">({pct.toFixed(1)}%)</span>
-                        </span>
-                      </div>
-                      <div className="w-full bg-[#0c0c14] rounded-full h-2.5 overflow-hidden">
-                        <div
-                          className="h-full rounded-full transition-all duration-700 ease-out"
-                          style={{ width: `${pct}%`, background: color }}
-                        />
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
+              <ResponsiveContainer width="100%" height={280}>
+                <RechartsPie>
+                  <Pie
+                    data={catData}
+                    cx="50%"
+                    cy="50%"
+                    innerRadius={60}
+                    outerRadius={100}
+                    paddingAngle={3}
+                    dataKey="value"
+                    stroke="none"
+                  >
+                    {catData.map((entry, index) => (
+                      <Cell key={`cell-${index}`} fill={entry.color} />
+                    ))}
+                  </Pie>
+                  <Tooltip content={<PieTooltip />} />
+                  <Legend
+                    verticalAlign="bottom"
+                    height={36}
+                    formatter={(value: string) => (
+                      <span className="text-xs text-[#7a7a95]">{value}</span>
+                    )}
+                  />
+                </RechartsPie>
+              </ResponsiveContainer>
             )}
           </div>
         </div>
