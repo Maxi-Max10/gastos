@@ -1,4 +1,4 @@
-# GastosIA - Control de Gastos con Inteligencia Artificial
+# Monetra - Control de Gastos con Inteligencia Artificial
 
 App de control de gastos personal con IA (Google Gemini), ajuste por inflación y soporte multi-usuario.
 

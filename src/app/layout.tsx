@@ -3,7 +3,7 @@ import "./globals.css";
 import { Providers } from "@/components/Providers";
 
 export const metadata: Metadata = {
-  title: "GastosIA - Control de Gastos Inteligente",
+  title: "Monetra - Control de Gastos Inteligente",
   description: "Controla tus gastos con inteligencia artificial. Ajuste por inflación, resúmenes y consejos financieros.",
 };
 

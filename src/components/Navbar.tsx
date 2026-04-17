@@ -24,7 +24,7 @@ export default function Navbar() {
               <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-[#7c3aed] to-[#6d28d9] flex items-center justify-center shadow-lg shadow-purple-500/20 group-hover:shadow-purple-500/30 transition-shadow">
                 <Sparkles className="w-4 h-4 text-white" />
               </div>
-              <span className="text-lg font-bold gradient-text hidden sm:block">GastosIA</span>
+              <span className="text-lg font-bold gradient-text hidden sm:block">Monetra</span>
             </Link>
             <div className="hidden sm:flex items-center gap-1">
               {links.map((link) => {

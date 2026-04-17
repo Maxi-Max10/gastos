@@ -118,7 +118,7 @@ export default function HomePage() {
           <div className="w-9 h-9 rounded-lg bg-gradient-to-br from-[#7c3aed] to-[#6d28d9] flex items-center justify-center shadow-lg shadow-purple-500/20">
             <Sparkles className="w-4.5 h-4.5 text-white" />
           </div>
-          <span className="text-xl font-bold gradient-text">GastosIA</span>
+          <span className="text-xl font-bold gradient-text">Monetra</span>
         </div>
         <div className="flex items-center gap-2">
           <Link href="/login" className="btn-ghost text-sm">
@@ -247,7 +247,7 @@ export default function HomePage() {
             <div className="w-6 h-6 rounded-md bg-gradient-to-br from-[#7c3aed] to-[#6d28d9] flex items-center justify-center">
               <Sparkles className="w-3 h-3 text-white" />
             </div>
-            <span className="text-sm font-semibold gradient-text">GastosIA</span>
+            <span className="text-sm font-semibold gradient-text">Monetra</span>
           </div>
           <p className="text-xs text-[#4a4a60]">&copy; 2026 · Potenciado por Google Gemini</p>
         </div>
