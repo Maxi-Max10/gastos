@@ -39,6 +39,7 @@ export default function GastosPage() {
   const [descripcion, setDescripcion] = useState("");
   const [monto, setMonto] = useState("");
   const [categoria, setCategoria] = useState("alimentación");
+  const [categoriaCustom, setCategoriaCustom] = useState("");
   const [fecha, setFecha] = useState(new Date().toISOString().split("T")[0]);
   const [saving, setSaving] = useState(false);
 
@@ -46,6 +47,7 @@ export default function GastosPage() {
   const [editDesc, setEditDesc] = useState("");
   const [editMonto, setEditMonto] = useState("");
   const [editCat, setEditCat] = useState("");
+  const [editCatCustom, setEditCatCustom] = useState("");
   const [editFecha, setEditFecha] = useState("");
   const [editSaving, setEditSaving] = useState(false);
 
@@ -74,12 +76,13 @@ export default function GastosPage() {
       const res = await fetch("/api/gastos", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ descripcion, monto: Number(monto), categoria, fecha }),
+        body: JSON.stringify({ descripcion, monto: Number(monto), categoria: categoria === "__custom__" ? categoriaCustom.trim().toLowerCase() : categoria, fecha }),
       });
       if (!res.ok) throw new Error();
       setDescripcion("");
       setMonto("");
       setCategoria("alimentación");
+      setCategoriaCustom("");
       setFecha(new Date().toISOString().split("T")[0]);
       setShowForm(false);
       fetchGastos();
@@ -105,7 +108,13 @@ export default function GastosPage() {
     setEditId(g.id);
     setEditDesc(g.descripcion);
     setEditMonto(String(g.monto));
-    setEditCat(g.categoria);
+    if (CATEGORIAS.includes(g.categoria)) {
+      setEditCat(g.categoria);
+      setEditCatCustom("");
+    } else {
+      setEditCat("__custom__");
+      setEditCatCustom(g.categoria);
+    }
     setEditFecha(new Date(g.fecha).toISOString().split("T")[0]);
   };
 
@@ -117,7 +126,7 @@ export default function GastosPage() {
       const res = await fetch(`/api/gastos/${id}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ descripcion: editDesc, monto: Number(editMonto), categoria: editCat, fecha: editFecha }),
+        body: JSON.stringify({ descripcion: editDesc, monto: Number(editMonto), categoria: editCat === "__custom__" ? editCatCustom.trim().toLowerCase() : editCat, fecha: editFecha }),
       });
       if (!res.ok) throw new Error();
       setEditId(null);
@@ -204,7 +213,10 @@ export default function GastosPage() {
                   <Tag className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-[#4a4a60]" />
                   <select
                     value={categoria}
-                    onChange={(e) => setCategoria(e.target.value)}
+                    onChange={(e) => {
+                      setCategoria(e.target.value);
+                      if (e.target.value !== "__custom__") setCategoriaCustom("");
+                    }}
                     className="input-field !pl-11 !py-2.5 text-sm appearance-none cursor-pointer"
                   >
                     {CATEGORIAS.map((c) => (
@@ -212,8 +224,21 @@ export default function GastosPage() {
                         {CATEGORY_ICONS[c]} {c.charAt(0).toUpperCase() + c.slice(1)}
                       </option>
                     ))}
+                    <option value="__custom__">✏️ Ingresar manualmente...</option>
                   </select>
                 </div>
+                {categoria === "__custom__" && (
+                  <div className="relative mt-2">
+                    <input
+                      type="text"
+                      value={categoriaCustom}
+                      onChange={(e) => setCategoriaCustom(e.target.value)}
+                      required
+                      className="input-field !pl-3.5 !py-2.5 text-sm"
+                      placeholder="Escribí tu categoría..."
+                    />
+                  </div>
+                )}
               </div>
               <div>
                 <label className="block text-sm font-medium text-[#7a7a95] mb-2">Fecha</label>
@@ -330,7 +355,10 @@ export default function GastosPage() {
                         <Tag className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-[#4a4a60]" />
                         <select
                           value={editCat}
-                          onChange={(e) => setEditCat(e.target.value)}
+                          onChange={(e) => {
+                            setEditCat(e.target.value);
+                            if (e.target.value !== "__custom__") setEditCatCustom("");
+                          }}
                           className="input-field !pl-10 !py-2 text-sm appearance-none cursor-pointer"
                         >
                           {CATEGORIAS.map((c) => (
@@ -338,8 +366,21 @@ export default function GastosPage() {
                               {CATEGORY_ICONS[c]} {c.charAt(0).toUpperCase() + c.slice(1)}
                             </option>
                           ))}
+                          <option value="__custom__">✏️ Ingresar manualmente...</option>
                         </select>
                       </div>
+                      {editCat === "__custom__" && (
+                        <div className="relative">
+                          <input
+                            type="text"
+                            value={editCatCustom}
+                            onChange={(e) => setEditCatCustom(e.target.value)}
+                            required
+                            className="input-field !pl-3 !py-2 text-sm"
+                            placeholder="Categoría personalizada..."
+                          />
+                        </div>
+                      )}
                       <div className="relative">
                         <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-[#4a4a60]" />
                         <input
