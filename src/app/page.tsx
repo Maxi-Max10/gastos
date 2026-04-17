@@ -10,7 +10,106 @@ export default function HomePage() {
         <div className="absolute bottom-[-25%] right-[-10%] w-[500px] h-[500px] bg-[#3b82f6]/6 rounded-full blur-[140px]" />
         <div className="absolute top-[50%] left-[50%] -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-[#7c3aed]/3 rounded-full blur-[200px]" />
         {/* Grid pattern */}
-        <div className="absolute inset-0 opacity-[0.015]" style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg width=\'60\' height=\'60\' viewBox=\'0 0 60 60\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cg fill=\'none\' fill-rule=\'evenodd\'%3E%3Cg fill=\'%23ffffff\' fill-opacity=\'1\'%3E%3Cpath d=\'M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z\'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")' }} />
+        <div className="absolute inset-0 opacity-[0.03]" style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg width=\'60\' height=\'60\' viewBox=\'0 0 60 60\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cg fill=\'none\' fill-rule=\'evenodd\'%3E%3Cg fill=\'%23ffffff\' fill-opacity=\'1\'%3E%3Cpath d=\'M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z\'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")' }} />
+
+        {/* Floating tech shapes */}
+        {/* Circuit lines */}
+        <svg className="absolute top-[10%] left-[5%] w-72 h-72 opacity-[0.06] animate-float-slow" viewBox="0 0 200 200" fill="none">
+          <path d="M20 100h60l20-20h40l20 20h40" stroke="#7c3aed" strokeWidth="1.5" />
+          <path d="M100 20v60l20 20v40l-20 20v40" stroke="#7c3aed" strokeWidth="1.5" />
+          <circle cx="80" cy="100" r="4" fill="#7c3aed" />
+          <circle cx="120" cy="80" r="4" fill="#7c3aed" />
+          <circle cx="140" cy="100" r="4" fill="#7c3aed" />
+          <circle cx="100" cy="80" r="3" fill="#a78bfa" />
+          <circle cx="100" cy="140" r="3" fill="#a78bfa" />
+          <rect x="55" y="55" width="90" height="90" rx="8" stroke="#7c3aed" strokeWidth="0.8" strokeDasharray="4 4" />
+        </svg>
+
+        {/* Hexagonal grid */}
+        <svg className="absolute top-[15%] right-[8%] w-80 h-80 opacity-[0.05] animate-float-reverse" viewBox="0 0 200 200" fill="none">
+          <polygon points="100,10 170,45 170,115 100,150 30,115 30,45" stroke="#3b82f6" strokeWidth="1" />
+          <polygon points="100,30 150,55 150,105 100,130 50,105 50,55" stroke="#3b82f6" strokeWidth="0.8" />
+          <polygon points="100,50 130,65 130,95 100,110 70,95 70,65" stroke="#3b82f6" strokeWidth="0.6" />
+          <line x1="100" y1="10" x2="100" y2="50" stroke="#3b82f6" strokeWidth="0.5" />
+          <line x1="170" y1="45" x2="130" y2="65" stroke="#3b82f6" strokeWidth="0.5" />
+          <line x1="30" y1="45" x2="70" y2="65" stroke="#3b82f6" strokeWidth="0.5" />
+          <circle cx="100" cy="80" r="6" stroke="#60a5fa" strokeWidth="0.8" fill="none" />
+          <circle cx="100" cy="80" r="2" fill="#60a5fa" />
+        </svg>
+
+        {/* Chip / processor shape */}
+        <svg className="absolute bottom-[20%] left-[8%] w-64 h-64 opacity-[0.05] animate-float-medium" viewBox="0 0 200 200" fill="none">
+          <rect x="50" y="50" width="100" height="100" rx="10" stroke="#7c3aed" strokeWidth="1.5" />
+          <rect x="65" y="65" width="70" height="70" rx="5" stroke="#a78bfa" strokeWidth="0.8" />
+          {/* Pins top */}
+          <line x1="75" y1="50" x2="75" y2="30" stroke="#7c3aed" strokeWidth="1" />
+          <line x1="100" y1="50" x2="100" y2="30" stroke="#7c3aed" strokeWidth="1" />
+          <line x1="125" y1="50" x2="125" y2="30" stroke="#7c3aed" strokeWidth="1" />
+          {/* Pins bottom */}
+          <line x1="75" y1="150" x2="75" y2="170" stroke="#7c3aed" strokeWidth="1" />
+          <line x1="100" y1="150" x2="100" y2="170" stroke="#7c3aed" strokeWidth="1" />
+          <line x1="125" y1="150" x2="125" y2="170" stroke="#7c3aed" strokeWidth="1" />
+          {/* Pins left */}
+          <line x1="50" y1="75" x2="30" y2="75" stroke="#7c3aed" strokeWidth="1" />
+          <line x1="50" y1="100" x2="30" y2="100" stroke="#7c3aed" strokeWidth="1" />
+          <line x1="50" y1="125" x2="30" y2="125" stroke="#7c3aed" strokeWidth="1" />
+          {/* Pins right */}
+          <line x1="150" y1="75" x2="170" y2="75" stroke="#7c3aed" strokeWidth="1" />
+          <line x1="150" y1="100" x2="170" y2="100" stroke="#7c3aed" strokeWidth="1" />
+          <line x1="150" y1="125" x2="170" y2="125" stroke="#7c3aed" strokeWidth="1" />
+          <circle cx="100" cy="100" r="12" stroke="#a78bfa" strokeWidth="0.8" fill="none" />
+          <circle cx="100" cy="100" r="4" fill="#7c3aed" opacity="0.5" />
+        </svg>
+
+        {/* Data flow / network */}
+        <svg className="absolute bottom-[15%] right-[5%] w-72 h-72 opacity-[0.05] animate-float-slow" viewBox="0 0 200 200" fill="none">
+          <circle cx="100" cy="100" r="8" fill="#10b981" opacity="0.4" />
+          <circle cx="100" cy="100" r="25" stroke="#10b981" strokeWidth="0.6" strokeDasharray="3 3" />
+          <circle cx="100" cy="100" r="50" stroke="#10b981" strokeWidth="0.4" strokeDasharray="5 5" />
+          <circle cx="100" cy="100" r="75" stroke="#10b981" strokeWidth="0.3" strokeDasharray="7 7" />
+          {/* Nodes */}
+          <circle cx="50" cy="100" r="4" fill="#34d399" />
+          <circle cx="150" cy="100" r="4" fill="#34d399" />
+          <circle cx="100" cy="50" r="4" fill="#34d399" />
+          <circle cx="100" cy="150" r="4" fill="#34d399" />
+          <circle cx="65" cy="65" r="3" fill="#34d399" opacity="0.6" />
+          <circle cx="135" cy="65" r="3" fill="#34d399" opacity="0.6" />
+          <circle cx="65" cy="135" r="3" fill="#34d399" opacity="0.6" />
+          <circle cx="135" cy="135" r="3" fill="#34d399" opacity="0.6" />
+          {/* Connection lines */}
+          <line x1="50" y1="100" x2="100" y2="100" stroke="#10b981" strokeWidth="0.5" />
+          <line x1="150" y1="100" x2="100" y2="100" stroke="#10b981" strokeWidth="0.5" />
+          <line x1="100" y1="50" x2="100" y2="100" stroke="#10b981" strokeWidth="0.5" />
+          <line x1="100" y1="150" x2="100" y2="100" stroke="#10b981" strokeWidth="0.5" />
+          <line x1="65" y1="65" x2="100" y2="100" stroke="#10b981" strokeWidth="0.3" />
+          <line x1="135" y1="65" x2="100" y2="100" stroke="#10b981" strokeWidth="0.3" />
+          <line x1="65" y1="135" x2="100" y2="100" stroke="#10b981" strokeWidth="0.3" />
+          <line x1="135" y1="135" x2="100" y2="100" stroke="#10b981" strokeWidth="0.3" />
+        </svg>
+
+        {/* Binary / code block */}
+        <svg className="absolute top-[55%] left-[15%] w-48 h-48 opacity-[0.04] animate-float-reverse" viewBox="0 0 200 200" fill="none">
+          <text x="20" y="40" fill="#a78bfa" fontSize="12" fontFamily="monospace">01101001</text>
+          <text x="20" y="60" fill="#a78bfa" fontSize="12" fontFamily="monospace">10010110</text>
+          <text x="20" y="80" fill="#7c3aed" fontSize="12" fontFamily="monospace">11001010</text>
+          <text x="20" y="100" fill="#a78bfa" fontSize="12" fontFamily="monospace">01010111</text>
+          <text x="20" y="120" fill="#7c3aed" fontSize="12" fontFamily="monospace">10110100</text>
+          <text x="20" y="140" fill="#a78bfa" fontSize="12" fontFamily="monospace">01001101</text>
+          <text x="20" y="160" fill="#7c3aed" fontSize="12" fontFamily="monospace">11100011</text>
+        </svg>
+
+        {/* Brackets / code symbol */}
+        <svg className="absolute top-[45%] right-[12%] w-40 h-40 opacity-[0.05] animate-float-medium" viewBox="0 0 200 200" fill="none">
+          <text x="30" y="110" fill="#60a5fa" fontSize="80" fontFamily="monospace" fontWeight="300">{"{ }"}</text>
+        </svg>
+
+        {/* Small floating dots */}
+        <div className="absolute top-[20%] left-[30%] w-2 h-2 rounded-full bg-[#7c3aed] opacity-20 animate-pulse" />
+        <div className="absolute top-[35%] right-[25%] w-1.5 h-1.5 rounded-full bg-[#3b82f6] opacity-15 animate-pulse" style={{ animationDelay: '1s' }} />
+        <div className="absolute top-[70%] left-[40%] w-1 h-1 rounded-full bg-[#10b981] opacity-20 animate-pulse" style={{ animationDelay: '2s' }} />
+        <div className="absolute top-[60%] right-[35%] w-2 h-2 rounded-full bg-[#a78bfa] opacity-10 animate-pulse" style={{ animationDelay: '0.5s' }} />
+        <div className="absolute top-[80%] left-[20%] w-1.5 h-1.5 rounded-full bg-[#60a5fa] opacity-15 animate-pulse" style={{ animationDelay: '1.5s' }} />
+        <div className="absolute top-[25%] left-[60%] w-1 h-1 rounded-full bg-[#34d399] opacity-20 animate-pulse" style={{ animationDelay: '3s' }} />
       </div>
 
       {/* Navbar */}
